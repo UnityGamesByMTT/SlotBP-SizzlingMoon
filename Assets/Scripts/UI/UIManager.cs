@@ -171,6 +171,14 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject LBPopup_Object;
 
+    [Header("Turbo Speed Buttons")]
+    [SerializeField]
+    private Button m_Turtle_Speed_Button;
+    [SerializeField]
+    private Button m_Rabbit_Speed_Button;
+    [SerializeField]
+    private Button m_Cheetah_Speed_Button;
+
     [Header("Quit Popup")]
     [SerializeField]
     private GameObject QuitPopup_Object;
@@ -349,6 +357,33 @@ public class UIManager : MonoBehaviour
         if (m_ExitBetPanel) m_ExitBetPanel.onClick.AddListener(() =>
         {
             m_BetPanel.SetActive(false);
+        });
+
+        if (m_Turtle_Speed_Button) m_Turtle_Speed_Button.onClick.RemoveAllListeners();
+        if (m_Turtle_Speed_Button) m_Turtle_Speed_Button.onClick.AddListener(() =>
+        {
+            m_Turtle_Speed_Button.gameObject.SetActive(false);
+            m_Rabbit_Speed_Button.gameObject.SetActive(true);
+            m_Cheetah_Speed_Button.gameObject.SetActive(false);
+            slotManager.m_Speed = 0.4f;
+        });
+
+        if (m_Rabbit_Speed_Button) m_Rabbit_Speed_Button.onClick.RemoveAllListeners();
+        if (m_Rabbit_Speed_Button) m_Rabbit_Speed_Button.onClick.AddListener(() =>
+        {
+            m_Turtle_Speed_Button.gameObject.SetActive(false);
+            m_Rabbit_Speed_Button.gameObject.SetActive(false);
+            m_Cheetah_Speed_Button.gameObject.SetActive(true);
+            slotManager.m_Speed = 0.2f;
+        });
+
+        if (m_Cheetah_Speed_Button) m_Cheetah_Speed_Button.onClick.RemoveAllListeners();
+        if (m_Cheetah_Speed_Button) m_Cheetah_Speed_Button.onClick.AddListener(() =>
+        {
+            m_Turtle_Speed_Button.gameObject.SetActive(true);
+            m_Rabbit_Speed_Button.gameObject.SetActive(false);
+            m_Cheetah_Speed_Button.gameObject.SetActive(false);
+            slotManager.m_Speed = 0.6f;
         });
 
         AssignBetButtons(m_DummyBetValues);
