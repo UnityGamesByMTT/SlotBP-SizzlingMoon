@@ -366,6 +366,9 @@ public class UIManager : MonoBehaviour
             m_Rabbit_Speed_Button.gameObject.SetActive(true);
             m_Cheetah_Speed_Button.gameObject.SetActive(false);
             slotManager.m_Speed = 0.4f;
+            slotManager.m_Is_Turtle = false;
+            slotManager.m_Is_Rabbit = true;
+            slotManager.m_Is_Cheetah = false;
         });
 
         if (m_Rabbit_Speed_Button) m_Rabbit_Speed_Button.onClick.RemoveAllListeners();
@@ -375,6 +378,9 @@ public class UIManager : MonoBehaviour
             m_Rabbit_Speed_Button.gameObject.SetActive(false);
             m_Cheetah_Speed_Button.gameObject.SetActive(true);
             slotManager.m_Speed = 0.2f;
+            slotManager.m_Is_Turtle = false;
+            slotManager.m_Is_Rabbit = false;
+            slotManager.m_Is_Cheetah = true;
         });
 
         if (m_Cheetah_Speed_Button) m_Cheetah_Speed_Button.onClick.RemoveAllListeners();
@@ -384,6 +390,9 @@ public class UIManager : MonoBehaviour
             m_Rabbit_Speed_Button.gameObject.SetActive(false);
             m_Cheetah_Speed_Button.gameObject.SetActive(false);
             slotManager.m_Speed = 0.6f;
+            slotManager.m_Is_Turtle = true;
+            slotManager.m_Is_Rabbit = false;
+            slotManager.m_Is_Cheetah = false;
         });
 
         AssignBetButtons(m_DummyBetValues);

@@ -144,7 +144,9 @@ public class SlotBehaviour : MonoBehaviour
     private bool IsSpinning = false;
     private bool CheckSpinAudio = false;
     internal bool CheckPopups = false;
-
+    internal bool m_Is_Turtle = false;
+    internal bool m_Is_Rabbit = true;
+    internal bool m_Is_Cheetah = false;
     internal float m_Speed = 0.4f;
     private int BetCounter = 0;
     private double currentBalance = 0;
@@ -195,24 +197,24 @@ public class SlotBehaviour : MonoBehaviour
         tweenHeight = (myImages.Length * IconSizeFactor) - 280;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log("Cheetah...");
-            m_Speed = 0.2f;
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            Debug.Log("Rabbit...");
-            m_Speed = 0.4f;
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Debug.Log("Turtle...");
-            m_Speed = 0.6f;
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.E))
+    //    {
+    //        Debug.Log("Cheetah...");
+    //        m_Speed = 0.2f;
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.W))
+    //    {
+    //        Debug.Log("Rabbit...");
+    //        m_Speed = 0.4f;
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.R))
+    //    {
+    //        Debug.Log("Turtle...");
+    //        m_Speed = 0.6f;
+    //    }
+    //}
 
     #region Autospin
     private void AutoSpin()
@@ -557,7 +559,7 @@ public class SlotBehaviour : MonoBehaviour
         }
 
         //HACK: This will be used when to send the spin instruction to the socket and wait for the socket to receive the request.
-        //SocketManager.AccumulateResult(BetCounter);
+        SocketManager.AccumulateResult(BetCounter);
         //yield return new WaitUntil(() => SocketManager.isResultdone);
 
         //Populate The Tempimages To Show The Result Images.
@@ -605,7 +607,8 @@ public class SlotBehaviour : MonoBehaviour
 
         //PrioritizeList();
 
-        yield return new WaitForSeconds(0.5f);
+        //yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(m_Is_Turtle ? 0.7f : m_Is_Rabbit ? 0.5f : 0.3f);
 
         TweenSpinning = StartCoroutine(LevelOrderTraversal());
 

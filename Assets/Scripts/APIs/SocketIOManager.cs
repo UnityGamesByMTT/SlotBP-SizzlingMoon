@@ -37,13 +37,14 @@ public class SocketIOManager : MonoBehaviour
     internal JSHandler _jsManager;
 
     protected string SocketURI = null;
-    protected string TestSocketURI = "https://game-crm-rtp-backend.onrender.com/";
+    protected string TestSocketURI = "http://localhost:5000";
+    //protected string TestSocketURI = "https://game-crm-rtp-backend.onrender.com/";
     //protected string TestSocketURI = "https://7p68wzhv-5000.inc1.devtunnels.ms/";
 
     [SerializeField]
     private string testToken;
 
-    protected string gameID = "SL-VIK";
+    protected string gameID = "";
 
     internal bool isLoaded = false;
 
@@ -63,7 +64,7 @@ public class SocketIOManager : MonoBehaviour
     private void Start()
     {
         //OpenWebsocket();
-        //OpenSocket();
+        OpenSocket();
     }
 
     void ReceiveAuthToken(string jsonData)
@@ -283,10 +284,10 @@ public class SocketIOManager : MonoBehaviour
                     if (!SetInit)
                     {
                         Debug.Log(jsonObject);
-                        List<string> LinesString = ConvertListListIntToListString(initialData.Lines);
-                        List<string> InitialReels = ConvertListOfListsToStrings(initialData.Reel);
-                        InitialReels = RemoveQuotes(InitialReels);
-                        PopulateSlotSocket(InitialReels, LinesString);
+                        //List<string> LinesString = ConvertListListIntToListString(initialData.Lines);
+                        //List<string> InitialReels = ConvertListOfListsToStrings(initialData.Reel);
+                        //InitialReels = RemoveQuotes(InitialReels);
+                        //PopulateSlotSocket(LinesString);
                         SetInit = true;
                     }
                     else
@@ -298,7 +299,7 @@ public class SocketIOManager : MonoBehaviour
             case "ResultData":
                 {
                     Debug.Log(jsonObject);
-                    myData.message.GameData.FinalResultReel = ConvertListOfListsToStrings(myData.message.GameData.ResultReel);
+                    //myData.message.GameData.FinalResultReel = ConvertListOfListsToStrings(myData.message.GameData.ResultReel);
                     myData.message.GameData.FinalsymbolsToEmit = TransformAndRemoveRecurring(myData.message.GameData.symbolsToEmit);
                     resultData = myData.message.GameData;
                     playerdata = myData.message.PlayerData;
@@ -323,7 +324,7 @@ public class SocketIOManager : MonoBehaviour
         uiManager.InitialiseUIData(initUIData.AbtLogo.link, initUIData.AbtLogo.logoSprite, initUIData.ToULink, initUIData.PopLink, initUIData.paylines);
     }
 
-    private void PopulateSlotSocket(List<string> slotPop, List<string> LineIds)
+    private void PopulateSlotSocket(List<string> LineIds)
     {
         slotManager.shuffleInitialMatrix();
         for (int i = 0; i < LineIds.Count; i++)
@@ -462,22 +463,40 @@ public class AbtLogo
 [Serializable]
 public class GameData
 {
-    public List<List<string>> Reel { get; set; }
+    public List<List<int>> Reel { get; set; }
     public List<List<int>> Lines { get; set; }
+    public List<List<int>> BonusReel { get; set; }
+    public List<SpecialBonusSymbolMuliplier> specialBonusSymbolMulipliers { get; set; }
     public List<double> Bets { get; set; }
     public bool canSwitchLines { get; set; }
     public List<int> LinesCount { get; set; }
     public List<int> autoSpin { get; set; }
-    public List<List<string>> ResultReel { get; set; }
+    public List<List<int>> ResultReel { get; set; }
     public List<int> linesToEmit { get; set; }
     public List<List<string>> symbolsToEmit { get; set; }
     public double WinAmout { get; set; }
     public FreeSpins freeSpins { get; set; }
+    public bool isFreeSpin { get; set; }
+    public int freeSpinCount { get; set; }
+    public bool freeSpinAdded { get; set; }
+    public List<FrozenIndex> frozenIndices { get; set; }
+    public bool isGrandPrize { get; set; }
+    public bool isMoonJackpot { get; set; }
+    public List<object> moonMysteryData { get; set; }
+    public bool isStickyBonus { get; set; }
+    public List<object> stickyBonusValue { get; set; }
     public List<string> FinalsymbolsToEmit { get; set; }
     public List<string> FinalResultReel { get; set; }
     public double jackpot { get; set; }
     public bool isBonus { get; set; }
     public double BonusStopIndex { get; set; }
+}
+
+[Serializable]
+public class SpecialBonusSymbolMuliplier
+{
+    public string name { get; set; }
+    public int value { get; set; }
 }
 
 [Serializable]
@@ -529,7 +548,7 @@ public class Symbol
 
     // This property will hold the properly deserialized list of lists of integers
     [JsonIgnore]
-    public List<List<int>> Multiplier { get; private set; }
+    public List<List<double>> Multiplier { get; private set; }
 
     // Custom deserialization method to handle the conversion
     [OnDeserialized]
@@ -538,26 +557,39 @@ public class Symbol
         // Handle the case where multiplier is an object (empty in JSON)
         if (MultiplierObject is JObject)
         {
-            Multiplier = new List<List<int>>();
+            Multiplier = new List<List<double>>();
         }
         else
         {
             // Deserialize normally assuming it's an array of arrays
-            Multiplier = JsonConvert.DeserializeObject<List<List<int>>>(MultiplierObject.ToString());
+            Multiplier = JsonConvert.DeserializeObject<List<List<double>>>(MultiplierObject.ToString());
         }
     }
     public object defaultAmount { get; set; }
     public object symbolsCount { get; set; }
     public object increaseValue { get; set; }
     public object description { get; set; }
+    public int payout { get; set; }
+    public object mixedPayout { get; set; }
+    public object defaultPayout { get; set; }
     public int freeSpin { get; set; }
 }
+
+[Serializable]
+public class FrozenIndex
+{
+    public List<int> position { get; set; }
+    public int prizeValue { get; set; }
+    public int symbol { get; set; }
+}
+
 [Serializable]
 public class PlayerData
 {
     public double Balance { get; set; }
     public double haveWon { get; set; }
     public double currentWining { get; set; }
+    public double totalbet { get; set; }
 }
 [Serializable]
 public class AuthTokenData
