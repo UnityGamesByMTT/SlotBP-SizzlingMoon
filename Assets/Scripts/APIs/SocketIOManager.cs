@@ -285,9 +285,9 @@ public class SocketIOManager : MonoBehaviour
                     {
                         Debug.Log(jsonObject);
                         //List<string> LinesString = ConvertListListIntToListString(initialData.Lines);
-                        //List<string> InitialReels = ConvertListOfListsToStrings(initialData.Reel);
-                        //InitialReels = RemoveQuotes(InitialReels);
-                        //PopulateSlotSocket(LinesString);
+                        List<string> InitialReels = ConvertListOfListsToStrings(initialData.Reel);
+                        InitialReels = RemoveQuotes(InitialReels);
+                        PopulateSlotSocket(InitialReels);
                         SetInit = true;
                     }
                     else
@@ -299,7 +299,7 @@ public class SocketIOManager : MonoBehaviour
             case "ResultData":
                 {
                     Debug.Log(jsonObject);
-                    //myData.message.GameData.FinalResultReel = ConvertListOfListsToStrings(myData.message.GameData.ResultReel);
+                    myData.message.GameData.FinalResultReel = ConvertListOfListsToStrings(myData.message.GameData.ResultReel);
                     myData.message.GameData.FinalsymbolsToEmit = TransformAndRemoveRecurring(myData.message.GameData.symbolsToEmit);
                     resultData = myData.message.GameData;
                     playerdata = myData.message.PlayerData;
@@ -327,10 +327,10 @@ public class SocketIOManager : MonoBehaviour
     private void PopulateSlotSocket(List<string> LineIds)
     {
         slotManager.shuffleInitialMatrix();
-        for (int i = 0; i < LineIds.Count; i++)
-        {
-            slotManager.FetchLines(LineIds[i], i);
-        }
+        //for (int i = 0; i < LineIds.Count; i++)
+        //{
+        //    slotManager.FetchLines(LineIds[i], i);
+        //}
 
         slotManager.SetInitialUI();
 
@@ -463,7 +463,7 @@ public class AbtLogo
 [Serializable]
 public class GameData
 {
-    public List<List<int>> Reel { get; set; }
+    public List<List<string>> Reel { get; set; }
     public List<List<int>> Lines { get; set; }
     public List<List<int>> BonusReel { get; set; }
     public List<SpecialBonusSymbolMuliplier> specialBonusSymbolMulipliers { get; set; }
@@ -471,7 +471,7 @@ public class GameData
     public bool canSwitchLines { get; set; }
     public List<int> LinesCount { get; set; }
     public List<int> autoSpin { get; set; }
-    public List<List<int>> ResultReel { get; set; }
+    public List<List<string>> ResultReel { get; set; }
     public List<int> linesToEmit { get; set; }
     public List<List<string>> symbolsToEmit { get; set; }
     public double WinAmout { get; set; }

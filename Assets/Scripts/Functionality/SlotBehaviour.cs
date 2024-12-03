@@ -401,7 +401,7 @@ public class SlotBehaviour : MonoBehaviour
         {
             for (int j = 0; j < 3; j++)
             {
-                int randomIndex = UnityEngine.Random.Range(0, 14);
+                int randomIndex = UnityEngine.Random.Range(0, myImages.Length);
                 Tempimages[i].slotImages[j].sprite = myImages[randomIndex];
             }
         }
@@ -416,7 +416,7 @@ public class SlotBehaviour : MonoBehaviour
         if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("f2");
         currentBalance = SocketManager.playerdata.Balance;
         currentTotalBet = SocketManager.initialData.Bets[BetCounter] * Lines;
-        _bonusManager.PopulateWheel(SocketManager.bonusdata);
+        //_bonusManager.PopulateWheel(SocketManager.bonusdata);
         CompareBalance();
         uiManager.InitialiseUIData(SocketManager.initUIData.AbtLogo.link, SocketManager.initUIData.AbtLogo.logoSprite, SocketManager.initUIData.ToULink, SocketManager.initUIData.PopLink, SocketManager.initUIData.paylines);
     }
@@ -560,50 +560,62 @@ public class SlotBehaviour : MonoBehaviour
 
         //HACK: This will be used when to send the spin instruction to the socket and wait for the socket to receive the request.
         SocketManager.AccumulateResult(BetCounter);
-        //yield return new WaitUntil(() => SocketManager.isResultdone);
+        yield return new WaitUntil(() => SocketManager.isResultdone);
 
         //Populate The Tempimages To Show The Result Images.
-        int[,] m_DemoResponse =
-            {
-                { 1, 7, 3, 8 },
-                { 3, 10, 1, 11},
-                { 2, 8, 4, 12 },
-                { 4, 3, 11, 9 }
-            };
+        //int[,] m_DemoResponse =
+        //    {
+        //        { 1, 7, 3, 8 },
+        //        { 3, 10, 1, 11},
+        //        { 2, 8, 4, 12 },
+        //        { 4, 3, 11, 9 }
+        //    };
+
+        //List<List<int>> m_DemoResponse = SocketManager.resultData.ResultReel;
+
+
         //for (int j = 0; j < SocketManager.resultData.ResultReel.Count; j++)
         //{
         //    List<int> resultnum = SocketManager.resultData.FinalResultReel[j]?.Split(',')?.Select(Int32.Parse)?.ToList();
         //    for (int i = 0; i < 5; i++)
         //    {
         //        if (images[i].slotImages[images[i].slotImages.Count - 5 + j]) images[i].slotImages[images[i].slotImages.Count - 5 + j].sprite = myImages[resultnum[i]];
-        //        PopulateAnimationSprites(images[i].slotImages[images[i].slotImages.Count - 5 + j].gameObject.GetComponent<ImageAnimation>(), resultnum[i]);
+        //        //PopulateAnimationSprites(images[i].slotImages[images[i].slotImages.Count - 5 + j].gameObject.GetComponent<ImageAnimation>(), resultnum[i]);
         //    }
         //}
 
-        for (int i = 0; i < Tempimages.Count; i++)
+        for(int i = 0; i < Tempimages.Count; i++)
         {
-            for (int j = 0; j < Tempimages[i].slotImages.Count; j++)
+            for(int j = 0; j < Tempimages[i].slotImages.Count; j++)
             {
-                Tempimages[i].slotImages[j].sprite = myImages[m_DemoResponse[j, i]];
-                m_ShowTempImages[i].slotImages[j].transform.GetChild(2).GetComponent<Image>().sprite = myImages[m_DemoResponse[j, i]];
-
-                if(m_DemoResponse[j, i] == 11 && !GetSticky(m_ShowTempImages[i].slotImages[j].transform, false))
-                {
-                    m_Sticky.Add(new Sticky { m_Transform = m_ShowTempImages[i].slotImages[j].transform, m_Count = UnityEngine.Random.Range(1, 6) });
-                    //m_UI_Order.Add(new OrderingUI
-                    //{
-                    //    child_index = 2,
-                    //    current_object = m_ShowTempImages[i].slotImages[j].transform.GetChild(2),
-                    //    current_position = m_ShowTempImages[i].slotImages[j].transform.GetChild(2).position,
-                    //    this_parent = m_ShowTempImages[i].slotImages[j].transform
-                    //});
-                    //m_ShowTempImages[i].slotImages[j].transform.GetChild(2).transform.SetParent(m_DoubleCover);
-                    //m_ShowTempImages[i].slotImages[j].GetComponent<RectTransform>().sizeDelta = new Vector2(300, 300);
-                }
-                //m_AnimationController.m_AnimatedSlots[i].slotImages[j].sprite = myImages[m_DemoResponse[j, i]];
-                //PopulateAnimationSprites(m_AnimationController.m_AnimatedSlots[i].slotImages[j].gameObject.GetComponent<ImageAnimation>(), m_DemoResponse[j, i]);
+                Tempimages[i].slotImages[j].sprite = myImages[int.Parse(SocketManager.resultData.ResultReel[i][j])];
             }
         }
+
+        //for (int i = 0; i < Tempimages.Count; i++)
+        //{
+        //    for (int j = 0; j < Tempimages[i].slotImages.Count; j++)
+        //    {
+        //        Tempimages[i].slotImages[j].sprite = myImages[m_DemoResponse[j, i]];
+        //        m_ShowTempImages[i].slotImages[j].transform.GetChild(2).GetComponent<Image>().sprite = myImages[m_DemoResponse[j, i]];
+
+        //        if(m_DemoResponse[j, i] == 11 && !GetSticky(m_ShowTempImages[i].slotImages[j].transform, false))
+        //        {
+        //            m_Sticky.Add(new Sticky { m_Transform = m_ShowTempImages[i].slotImages[j].transform, m_Count = UnityEngine.Random.Range(1, 6) });
+        //            //m_UI_Order.Add(new OrderingUI
+        //            //{
+        //            //    child_index = 2,
+        //            //    current_object = m_ShowTempImages[i].slotImages[j].transform.GetChild(2),
+        //            //    current_position = m_ShowTempImages[i].slotImages[j].transform.GetChild(2).position,
+        //            //    this_parent = m_ShowTempImages[i].slotImages[j].transform
+        //            //});
+        //            //m_ShowTempImages[i].slotImages[j].transform.GetChild(2).transform.SetParent(m_DoubleCover);
+        //            //m_ShowTempImages[i].slotImages[j].GetComponent<RectTransform>().sizeDelta = new Vector2(300, 300);
+        //        }
+        //        //m_AnimationController.m_AnimatedSlots[i].slotImages[j].sprite = myImages[m_DemoResponse[j, i]];
+        //        //PopulateAnimationSprites(m_AnimationController.m_AnimatedSlots[i].slotImages[j].gameObject.GetComponent<ImageAnimation>(), m_DemoResponse[j, i]);
+        //    }
+        //}
 
         //PrioritizeList();
 
@@ -627,7 +639,7 @@ public class SlotBehaviour : MonoBehaviour
         TotalWin_text.text = m_Instructions[0];
 
         //HACK: Check For The Result And Activate Animations Accordingly
-        //CheckPayoutLineBackend(SocketManager.resultData.linesToEmit, SocketManager.resultData.FinalsymbolsToEmit, SocketManager.resultData.jackpot);
+        CheckPayoutLineBackend(SocketManager.resultData.linesToEmit, SocketManager.resultData.FinalsymbolsToEmit, SocketManager.resultData.jackpot);
         //m_AnimationController.StartAnimation();
 
         //HACK: Kills The Tweens So That They Will Get Ready For Next Spin
@@ -635,29 +647,29 @@ public class SlotBehaviour : MonoBehaviour
 
         CheckPopups = true;
 
-        //if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString("f2");
+        if (TotalWin_text) TotalWin_text.text = SocketManager.playerdata.currentWining.ToString("f2");
 
-        //if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("f2");
+        if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("f2");
 
-        //currentBalance = SocketManager.playerdata.Balance;
+        currentBalance = SocketManager.playerdata.Balance;
 
-        //if (SocketManager.resultData.jackpot > 0)
-        //{
-        //    uiManager.PopulateWin(4, SocketManager.resultData.jackpot);
-        //    yield return new WaitUntil(() => !CheckPopups);
-        //    CheckPopups = true;
-        //}
+        if (SocketManager.resultData.jackpot > 0)
+        {
+            uiManager.PopulateWin(4, SocketManager.resultData.jackpot);
+            yield return new WaitUntil(() => !CheckPopups);
+            CheckPopups = true;
+        }
 
-        //if (SocketManager.resultData.isBonus)
-        //{
-        //    CheckBonusGame();
-        //}
-        //else
-        //{
-        //    CheckWinPopups();
-        //}
+        if (SocketManager.resultData.isBonus)
+        {
+            CheckBonusGame();
+        }
+        else
+        {
+            CheckWinPopups();
+        }
 
-        //yield return new WaitUntil(() => !CheckPopups);
+        yield return new WaitUntil(() => !CheckPopups);
         if (!IsAutoSpin && !IsFreeSpin)
         {
             ToggleButtonGrp(true);
@@ -668,24 +680,24 @@ public class SlotBehaviour : MonoBehaviour
             yield return new WaitForSeconds(2f);
             IsSpinning = false;
         }
-        //if(SocketManager.resultData.freeSpins.isNewAdded)
-        //{
-        //    if(IsFreeSpin)
-        //    {
-        //        IsFreeSpin = false;
-        //        if (FreeSpinRoutine != null)
-        //        {
-        //            StopCoroutine(FreeSpinRoutine);
-        //            FreeSpinRoutine = null;
-        //        }
-        //    }
-        //    uiManager.FreeSpinProcess((int)SocketManager.resultData.freeSpins.count);
-        //    if (IsAutoSpin)
-        //    {
-        //        StopAutoSpin();
-        //        yield return new WaitForSeconds(0.1f);
-        //    }
-        //}
+        if (SocketManager.resultData.freeSpinAdded)
+        {
+            if (IsFreeSpin)
+            {
+                IsFreeSpin = false;
+                if (FreeSpinRoutine != null)
+                {
+                    StopCoroutine(FreeSpinRoutine);
+                    FreeSpinRoutine = null;
+                }
+            }
+            uiManager.FreeSpinProcess((int)SocketManager.resultData.freeSpinCount);
+            if (IsAutoSpin)
+            {
+                StopAutoSpin();
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
     }
 
     private IEnumerator LevelOrderTraversal()
