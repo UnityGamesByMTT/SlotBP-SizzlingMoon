@@ -85,7 +85,8 @@ public class SlotBehaviour : MonoBehaviour
     private TMP_Text LineBet_text;
     [SerializeField]
     private TMP_Text TotalWin_text;
-
+    [SerializeField]
+    private GameObject m_CoverPanel;
 
     [Header("Audio Management")]
     [SerializeField]
@@ -148,7 +149,7 @@ public class SlotBehaviour : MonoBehaviour
     internal bool m_Is_Rabbit = true;
     internal bool m_Is_Cheetah = false;
     internal float m_Speed = 0.4f;
-    private int BetCounter = 0;
+    internal int BetCounter = 0;
     private double currentBalance = 0;
     private double currentTotalBet = 0;
     protected int Lines = 20;
@@ -171,19 +172,19 @@ public class SlotBehaviour : MonoBehaviour
         if (SlotStart_Button) SlotStart_Button.onClick.RemoveAllListeners();
         if (SlotStart_Button) SlotStart_Button.onClick.AddListener(delegate { StartSlots(); });
 
-        //if (BetPlus_Button) BetPlus_Button.onClick.RemoveAllListeners();
-        //if (BetPlus_Button) BetPlus_Button.onClick.AddListener(delegate { ChangeBet(true); });
-        //if (BetMinus_Button) BetMinus_Button.onClick.RemoveAllListeners();
-        //if (BetMinus_Button) BetMinus_Button.onClick.AddListener(delegate { ChangeBet(false); });
+        if (BetPlus_Button) BetPlus_Button.onClick.RemoveAllListeners();
+        if (BetPlus_Button) BetPlus_Button.onClick.AddListener(delegate { ChangeBet(true); });
+        if (BetMinus_Button) BetMinus_Button.onClick.RemoveAllListeners();
+        if (BetMinus_Button) BetMinus_Button.onClick.AddListener(delegate { ChangeBet(false); });
 
-        //if (MaxBet_Button) MaxBet_Button.onClick.RemoveAllListeners();
-        //if (MaxBet_Button) MaxBet_Button.onClick.AddListener(MaxBet);
+        if (MaxBet_Button) MaxBet_Button.onClick.RemoveAllListeners();
+        if (MaxBet_Button) MaxBet_Button.onClick.AddListener(MaxBet);
 
-        if (m_BetButton) m_BetButton.onClick.RemoveAllListeners();
-        if (m_BetButton) m_BetButton.onClick.AddListener(() =>
-        {
-            uiManager.OpenBetPanel();
-        });
+        //if (m_BetButton) m_BetButton.onClick.RemoveAllListeners();
+        //if (m_BetButton) m_BetButton.onClick.AddListener(() =>
+        //{
+        //    uiManager.OpenBetPanel();
+        //});
 
         if (AutoSpin_Button) AutoSpin_Button.onClick.RemoveAllListeners();
         if (AutoSpin_Button) AutoSpin_Button.onClick.AddListener(AutoSpin);
@@ -361,9 +362,32 @@ public class SlotBehaviour : MonoBehaviour
         CompareBalance();
     }
 
+    //private void ChangeBet(bool IncDec)
+    //{
+    //    if (audioController) audioController.PlayButtonAudio();
+    //    if (IncDec)
+    //    {
+    //        if (BetCounter < SocketManager.initialData.Bets.Count - 1)
+    //        {
+    //            BetCounter++;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        if (BetCounter > 0)
+    //        {
+    //            BetCounter--;
+    //        }
+    //    }
+    //    if (LineBet_text) LineBet_text.text = SocketManager.initialData.Bets[BetCounter].ToString();
+    //    if (TotalBet_text) TotalBet_text.text = (SocketManager.initialData.Bets[BetCounter] * Lines).ToString();
+    //    currentTotalBet = SocketManager.initialData.Bets[BetCounter] * Lines;
+    //    CompareBalance();
+    //}
     private void ChangeBet(bool IncDec)
     {
         if (audioController) audioController.PlayButtonAudio();
+        uiManager.SelectBetButton(IncDec);
         if (IncDec)
         {
             if (BetCounter < SocketManager.initialData.Bets.Count - 1)
@@ -378,13 +402,15 @@ public class SlotBehaviour : MonoBehaviour
                 BetCounter--;
             }
         }
+
+        uiManager.UpdateExternalPaytableValue();
         if (LineBet_text) LineBet_text.text = SocketManager.initialData.Bets[BetCounter].ToString();
         if (TotalBet_text) TotalBet_text.text = (SocketManager.initialData.Bets[BetCounter] * Lines).ToString();
         currentTotalBet = SocketManager.initialData.Bets[BetCounter] * Lines;
         CompareBalance();
     }
 
-    internal void OnBetClicked(int Bet, float Value)
+    internal void OnBetClicked(int Bet, double Value)
     {
         if (audioController) audioController.PlayButtonAudio();
         BetCounter = Bet;
@@ -414,6 +440,8 @@ public class SlotBehaviour : MonoBehaviour
         if (TotalBet_text) TotalBet_text.text = (SocketManager.initialData.Bets[BetCounter] * Lines).ToString();
         if (TotalWin_text) TotalWin_text.text = "0.00";
         if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("f2");
+        if (MaxBet_Button) MaxBet_Button.transform.GetChild(0).GetComponent<TMP_Text>().text = SocketManager.initialData.Bets[SocketManager.initialData.Bets.Count - 1].ToString();
+        uiManager.LoadBetButtons(SocketManager.initialData.Bets, true);
         currentBalance = SocketManager.playerdata.Balance;
         currentTotalBet = SocketManager.initialData.Bets[BetCounter] * Lines;
         //_bonusManager.PopulateWheel(SocketManager.bonusdata);
@@ -708,7 +736,8 @@ public class SlotBehaviour : MonoBehaviour
             {
                 yield return new WaitForSeconds(0.08f);
                 m_ShowTempImages[j].slotImages[i].gameObject.SetActive(true);
-                if(!GetSticky(m_ShowTempImages[j].slotImages[i].transform, false))
+                m_ShowTempImages[j].slotImages[i].transform.GetChild(2).GetComponent<Image>().sprite = myImages[int.Parse(SocketManager.resultData.ResultReel[i][j])];
+                if (!GetSticky(m_ShowTempImages[j].slotImages[i].transform, false))
                     InitializeShowTweening(m_ShowTempImages[j].slotImages[i].transform.GetChild(2));
                 m_ShowTempImages[j].slotImages[i].transform.GetChild(1).GetComponent<ImageAnimation>().StartAnimation();
             }

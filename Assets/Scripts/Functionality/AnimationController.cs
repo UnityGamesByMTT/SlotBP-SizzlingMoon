@@ -18,17 +18,17 @@ public class AnimationController : MonoBehaviour
     private List<Tweener> m_SlotsAnim = new List<Tweener>();
     private bool m_PlayingAnimation = false;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            StartAnimation();
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            StopAnimation();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Space))
+    //    {
+    //        StartAnimation();
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.A))
+    //    {
+    //        StopAnimation();
+    //    }
+    //}
 
     internal void StartAnimation()
     {

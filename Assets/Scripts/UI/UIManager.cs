@@ -179,6 +179,18 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Button m_Cheetah_Speed_Button;
 
+    [Header("Value Paytable")]
+    [SerializeField]
+    private TMP_Text m_Moon_Value;
+    [SerializeField]
+    private TMP_Text m_Grand_Value;
+    [SerializeField]
+    private TMP_Text m_Major_Value;
+    [SerializeField]
+    private TMP_Text m_Minor_Value;
+    [SerializeField]
+    private TMP_Text m_Mini_Value;
+
     [Header("Quit Popup")]
     [SerializeField]
     private GameObject QuitPopup_Object;
@@ -208,7 +220,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Button m_ExitBetPanel;
     [SerializeField]
-    private List<Button> m_BetButtons;
+    internal List<Button> m_BetButtons;
 
     [SerializeField]
     private List<float> m_DummyBetValues;
@@ -218,6 +230,9 @@ public class UIManager : MonoBehaviour
     private bool isExit = false;
 
     private int FreeSpins;
+
+    private int bet_data_counter = 0;
+    private int bet_selected = 0;
 
 
     //private void Awake()
@@ -395,7 +410,7 @@ public class UIManager : MonoBehaviour
             slotManager.m_Is_Cheetah = false;
         });
 
-        AssignBetButtons(m_DummyBetValues);
+        //AssignBetButtons(m_DummyBetValues);
 
     }
 
@@ -407,25 +422,86 @@ public class UIManager : MonoBehaviour
     }
 
     #region [[===BET BUTTONS HANDLING===]]
-    private void AssignBetButtons(List<float> m_bet_items)
+    //private void AssignBetButtons(List<float> m_bet_items)
+    //{
+    //    for (int i = 0; i < m_BetButtons.Count; i++)
+    //    {
+    //        Button m_Temp_Bet = m_BetButtons[i];
+    //        if(i < m_bet_items.Count)
+    //        {
+    //            m_Temp_Bet.gameObject.SetActive(true);
+    //            m_Temp_Bet.transform.GetChild(0).GetComponent<TMP_Text>().text = m_bet_items[i].ToString("f2");
+    //            m_Temp_Bet.onClick.RemoveAllListeners();
+    //            m_Temp_Bet.onClick.AddListener(() =>
+    //            {
+    //                m_BetPanel.SetActive(false);
+    //                slotManager.OnBetClicked(GetBetCounter(m_Temp_Bet), float.Parse(m_Temp_Bet.transform.GetChild(0).GetComponent<TMP_Text>().text));
+    //            });
+    //        }
+    //        else
+    //        {
+    //            m_BetButtons[i].gameObject.SetActive(false);
+    //        }
+    //    }
+    //}
+
+    internal void UpdateExternalPaytableValue()
     {
-        for (int i = 0; i < m_BetButtons.Count; i++)
+        m_Moon_Value.text = (socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[4].value).ToString() + " FUN";
+        m_Grand_Value.text = (socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[3].value).ToString() + " FUN";
+        m_Major_Value.text = (socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[2].value).ToString() + " FUN";
+        m_Minor_Value.text = (socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[1].value).ToString() + " FUN";
+        m_Mini_Value.text = (socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[0].value).ToString() + " FUN";
+    }
+
+    internal void LoadBetButtons(List<double> m_bet_items, bool m_next_prev)
+    {
+        for(int i = 0; i < m_BetButtons.Count; i++)
         {
-            Button m_Temp_Bet = m_BetButtons[i];
+            Button tempButton = m_BetButtons[i];
             if(i < m_bet_items.Count)
             {
-                m_Temp_Bet.gameObject.SetActive(true);
-                m_Temp_Bet.transform.GetChild(0).GetComponent<TMP_Text>().text = m_bet_items[i].ToString("f2");
-                m_Temp_Bet.onClick.RemoveAllListeners();
-                m_Temp_Bet.onClick.AddListener(() =>
-                {
-                    m_BetPanel.SetActive(false);
-                    slotManager.OnBetClicked(GetBetCounter(m_Temp_Bet), float.Parse(m_Temp_Bet.transform.GetChild(0).GetComponent<TMP_Text>().text));
-                });
+                tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = m_bet_items[m_next_prev ? i + bet_data_counter : i - bet_data_counter].ToString();
+            }
+            slotManager.OnBetClicked(GetBetCounter(tempButton), double.Parse(tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text));
+        }
+        bet_data_counter = m_next_prev ? bet_data_counter + m_bet_items.Count - m_BetButtons.Count : bet_data_counter + m_bet_items.Count - m_BetButtons.Count;
+        UpdateExternalPaytableValue();
+    }
+
+    internal void SelectBetButton(bool incdec)
+    {
+        if (incdec)
+        {
+            if(bet_selected < m_BetButtons.Count)
+            {
+                bet_selected++;
+            ChangeBetToggle(bet_selected);
+            }
+
+        }
+        else
+        {
+            if(bet_selected > -1)
+            {
+                bet_selected--;
+            ChangeBetToggle(bet_selected);
+            }
+
+        }
+    }
+
+    private void ChangeBetToggle(int index)
+    {
+        for(int i = 0; i < m_BetButtons.Count; i++)
+        {
+            if(i != index)
+            {
+                m_BetButtons[index].interactable = true;
             }
             else
             {
-                m_BetButtons[i].gameObject.SetActive(false);
+                m_BetButtons[index].interactable = false;
             }
         }
     }
