@@ -6533,14 +6533,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81f2c8ee610c34558839b64290afe0ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Menu_Button: {fileID: 1793761132}
+  Menu_Button: {fileID: 917547286}
   Menu_Object: {fileID: 1793761130}
   Menu_RT: {fileID: 1793761131}
   Info_Object: {fileID: 1775280134}
-  Info_Button: {fileID: 721399234}
+  Info_Button: {fileID: 364932976}
   Info_Exit: {fileID: 631891415}
   Info_RT: {fileID: 721399233}
-  Settings_Button: {fileID: 836189147}
+  Settings_Button: {fileID: 385297981}
   Settings_Object: {fileID: 836189145}
   Settings_RT: {fileID: 836189146}
   Terms_Button: {fileID: 498928661}
@@ -6621,27 +6621,11 @@ MonoBehaviour:
   GameExit_Button: {fileID: 1178417770}
   slotManager: {fileID: 2046803210}
   socketManager: {fileID: 500036492}
-  m_BetPanel: {fileID: 0}
-  m_ExitBetPanel: {fileID: 0}
   m_BetButtons:
   - {fileID: 143194420}
   - {fileID: 652678582}
   - {fileID: 531885872}
   - {fileID: 997904969}
-  m_DummyBetValues:
-  - 0.4
-  - 0.8
-  - 1.2
-  - 1.6
-  - 2
-  - 2.4
-  - 2.8
-  - 3.2
-  - 3.6
-  - 4
-  - 8
-  - 12
-  - 16
 --- !u!1 &385297979
 GameObject:
   m_ObjectHideFlags: 0
@@ -12043,7 +12027,7 @@ MonoBehaviour:
     m_HighlightedSprite: {fileID: 1949004629, guid: 8b38ad8dd3aca43efa2a75b34762427e, type: 3}
     m_PressedSprite: {fileID: 431240439, guid: 8b38ad8dd3aca43efa2a75b34762427e, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: -2021347344, guid: 8b38ad8dd3aca43efa2a75b34762427e, type: 3}
+    m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -35027,6 +35011,7 @@ MonoBehaviour:
   TotalBet_text: {fileID: 69738317}
   LineBet_text: {fileID: 0}
   TotalWin_text: {fileID: 576684260}
+  m_CoverPanel: {fileID: 0}
   audioController: {fileID: 1030743558465206379}
   uiManager: {fileID: 377874625}
   _bonusManager: {fileID: 65498559}

@@ -268,7 +268,6 @@ public class SocketIOManager : MonoBehaviour
 
     private void ParseResponse(string jsonObject)
     {
-        Debug.Log(jsonObject);
         Root myData = JsonConvert.DeserializeObject<Root>(jsonObject);
 
         string id = myData.id;
@@ -283,7 +282,7 @@ public class SocketIOManager : MonoBehaviour
                     bonusdata = myData.message.BonusData;
                     if (!SetInit)
                     {
-                        Debug.Log(jsonObject);
+                        Debug.Log(String.Concat("<color=cyan><b>", jsonObject, "</b></color>"));
                         //List<string> LinesString = ConvertListListIntToListString(initialData.Lines);
                         List<string> InitialReels = ConvertListOfListsToStrings(initialData.Reel);
                         InitialReels = RemoveQuotes(InitialReels);
@@ -298,7 +297,7 @@ public class SocketIOManager : MonoBehaviour
                 }
             case "ResultData":
                 {
-                    Debug.Log(jsonObject);
+                    Debug.Log(String.Concat("<color=green><b>", jsonObject, "</b></color>"));
                     myData.message.GameData.FinalResultReel = ConvertListOfListsToStrings(myData.message.GameData.ResultReel);
                     myData.message.GameData.FinalsymbolsToEmit = TransformAndRemoveRecurring(myData.message.GameData.symbolsToEmit);
                     resultData = myData.message.GameData;
@@ -310,7 +309,7 @@ public class SocketIOManager : MonoBehaviour
                 {
                     if (this.manager != null)
                     {
-                        Debug.Log("Dispose my Socket");
+                        Debug.Log(String.Concat("<color=red><b>", "Dispose My Socket", "</b></color>"));
                         this.manager.Close();
                     }
                     Application.ExternalCall("window.parent.postMessage", "onExit", "*");

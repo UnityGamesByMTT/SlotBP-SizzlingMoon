@@ -178,7 +178,7 @@ public class SlotBehaviour : MonoBehaviour
         if (BetMinus_Button) BetMinus_Button.onClick.AddListener(delegate { ChangeBet(false); });
 
         if (MaxBet_Button) MaxBet_Button.onClick.RemoveAllListeners();
-        if (MaxBet_Button) MaxBet_Button.onClick.AddListener(MaxBet);
+        if (MaxBet_Button) MaxBet_Button.onClick.AddListener(delegate { MaxBet(); uiManager.LastBetCounter(); });
 
         //if (m_BetButton) m_BetButton.onClick.RemoveAllListeners();
         //if (m_BetButton) m_BetButton.onClick.AddListener(() =>
@@ -390,9 +390,14 @@ public class SlotBehaviour : MonoBehaviour
         uiManager.SelectBetButton(IncDec);
         if (IncDec)
         {
-            if (BetCounter < SocketManager.initialData.Bets.Count - 1)
+            if (BetCounter < SocketManager.initialData.Bets.Count - 2)
             {
                 BetCounter++;
+            }
+            else
+            {
+                BetCounter = 0;
+                uiManager.StartBetCounter();
             }
         }
         else
@@ -400,6 +405,11 @@ public class SlotBehaviour : MonoBehaviour
             if (BetCounter > 0)
             {
                 BetCounter--;
+            }
+            else
+            {
+                BetCounter = SocketManager.initialData.Bets.Count - 1;
+                uiManager.LastBetCounter();
             }
         }
 
@@ -441,7 +451,9 @@ public class SlotBehaviour : MonoBehaviour
         if (TotalWin_text) TotalWin_text.text = "0.00";
         if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("f2");
         if (MaxBet_Button) MaxBet_Button.transform.GetChild(0).GetComponent<TMP_Text>().text = SocketManager.initialData.Bets[SocketManager.initialData.Bets.Count - 1].ToString();
-        uiManager.LoadBetButtons(SocketManager.initialData.Bets, true);
+        //uiManager.LoadBetButtons(true);
+        uiManager.NextBets();
+        uiManager.StartBetCounter();
         currentBalance = SocketManager.playerdata.Balance;
         currentTotalBet = SocketManager.initialData.Bets[BetCounter] * Lines;
         //_bonusManager.PopulateWheel(SocketManager.bonusdata);
@@ -602,16 +614,6 @@ public class SlotBehaviour : MonoBehaviour
         //List<List<int>> m_DemoResponse = SocketManager.resultData.ResultReel;
 
 
-        //for (int j = 0; j < SocketManager.resultData.ResultReel.Count; j++)
-        //{
-        //    List<int> resultnum = SocketManager.resultData.FinalResultReel[j]?.Split(',')?.Select(Int32.Parse)?.ToList();
-        //    for (int i = 0; i < 5; i++)
-        //    {
-        //        if (images[i].slotImages[images[i].slotImages.Count - 5 + j]) images[i].slotImages[images[i].slotImages.Count - 5 + j].sprite = myImages[resultnum[i]];
-        //        //PopulateAnimationSprites(images[i].slotImages[images[i].slotImages.Count - 5 + j].gameObject.GetComponent<ImageAnimation>(), resultnum[i]);
-        //    }
-        //}
-
         for(int i = 0; i < Tempimages.Count; i++)
         {
             for(int j = 0; j < Tempimages[i].slotImages.Count; j++)
@@ -624,10 +626,10 @@ public class SlotBehaviour : MonoBehaviour
         //{
         //    for (int j = 0; j < Tempimages[i].slotImages.Count; j++)
         //    {
-        //        Tempimages[i].slotImages[j].sprite = myImages[m_DemoResponse[j, i]];
-        //        m_ShowTempImages[i].slotImages[j].transform.GetChild(2).GetComponent<Image>().sprite = myImages[m_DemoResponse[j, i]];
+        //        Tempimages[i].slotImages[j].sprite = myImages[int.Parse(SocketManager.resultData.ResultReel[i][j])];
+        //        m_ShowTempImages[i].slotImages[j].transform.GetChild(2).GetComponent<Image>().sprite = myImages[int.Parse(SocketManager.resultData.ResultReel[i][j])];
 
-        //        if(m_DemoResponse[j, i] == 11 && !GetSticky(m_ShowTempImages[i].slotImages[j].transform, false))
+        //        if (int.Parse(SocketManager.resultData.ResultReel[i][j]) == 11 && !GetSticky(m_ShowTempImages[i].slotImages[j].transform, false))
         //        {
         //            m_Sticky.Add(new Sticky { m_Transform = m_ShowTempImages[i].slotImages[j].transform, m_Count = UnityEngine.Random.Range(1, 6) });
         //            //m_UI_Order.Add(new OrderingUI
