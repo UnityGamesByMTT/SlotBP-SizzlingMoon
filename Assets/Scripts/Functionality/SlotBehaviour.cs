@@ -387,12 +387,12 @@ public class SlotBehaviour : MonoBehaviour
     private void ChangeBet(bool IncDec)
     {
         if (audioController) audioController.PlayButtonAudio();
-        uiManager.SelectBetButton(IncDec);
         if (IncDec)
         {
             if (BetCounter < SocketManager.initialData.Bets.Count - 2)
             {
                 BetCounter++;
+                uiManager.SelectBetButton(IncDec);
             }
             else
             {
@@ -405,10 +405,11 @@ public class SlotBehaviour : MonoBehaviour
             if (BetCounter > 0)
             {
                 BetCounter--;
+                uiManager.SelectBetButton(IncDec);
             }
             else
             {
-                BetCounter = SocketManager.initialData.Bets.Count - 1;
+                BetCounter = SocketManager.initialData.Bets.Count - 2;
                 uiManager.LastBetCounter();
             }
         }
@@ -452,7 +453,7 @@ public class SlotBehaviour : MonoBehaviour
         if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("f2");
         if (MaxBet_Button) MaxBet_Button.transform.GetChild(0).GetComponent<TMP_Text>().text = SocketManager.initialData.Bets[SocketManager.initialData.Bets.Count - 1].ToString();
         //uiManager.LoadBetButtons(true);
-        uiManager.NextBets();
+        //uiManager.NextBets();
         uiManager.StartBetCounter();
         currentBalance = SocketManager.playerdata.Balance;
         currentTotalBet = SocketManager.initialData.Bets[BetCounter] * Lines;

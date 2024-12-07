@@ -419,34 +419,46 @@ public class UIManager : MonoBehaviour
 
     #region [[===BET BUTTONS HANDLING===]]
 
-    internal void NextBets()
+    internal void NextBets(int transact)
     {
+        //HACK: The below code may be work accurately with out using bet_data_counter
+        int temp_counter = slotManager.BetCounter;
         for(int i = 0; i < m_BetButtons.Count; i++)
         {
-            if(bet_data_counter < socketManager.initialData.Bets.Count - 1)
+            if(slotManager.BetCounter < socketManager.initialData.Bets.Count - 1)
             {
                 Button tempButton = m_BetButtons[i];
-                tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = socketManager.initialData.Bets[bet_data_counter].ToString();
-                bet_data_counter++;
-                Debug.Log(string.Concat("<color=yellow><b>", bet_data_counter, "</b></color>"));
+                tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = socketManager.initialData.Bets[transact != 0 ? temp_counter - ((m_BetButtons.Count - 1) - i) : temp_counter].ToString();
+                if (transact == 0)
+                {
+                    temp_counter++;
+                    Debug.Log("Executing Increamemnt" + temp_counter);
+                }
+                Debug.Log(temp_counter + " " + m_BetButtons.Count + " " + i + " " + (m_BetButtons.Count - i) + (temp_counter - ((m_BetButtons.Count - 1) - i)));
             }
         }
-        UpdateExternalPaytableValue();
     }
 
-    internal void PrevBets()
+    internal void PrevBets(int transact)
     {
-        for(int i = m_BetButtons.Count - 1; i >= 0; i--)
+        //HACK: The below code may be work accurately with out using bet_data_counter
+        int temp_counter = slotManager.BetCounter;
+        //if (slotManager.BetCounter == 3) temp_counter++;
+        for (int i = 0; i < m_BetButtons.Count; i++)
         {
-            if(bet_data_counter > 0)
+            if (slotManager.BetCounter >= 0)
             {
-                bet_data_counter--;
                 Button tempButton = m_BetButtons[i];
-                tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = socketManager.initialData.Bets[bet_data_counter].ToString();
-                Debug.Log(string.Concat("<color=green><b>", bet_data_counter, "</b></color>"));
+                //tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = socketManager.initialData.Bets[transact != 0 ? temp_counter - ((m_BetButtons.Count - 1) - i) : temp_counter].ToString();
+                tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = socketManager.initialData.Bets[transact != 0 ? temp_counter : temp_counter - ((m_BetButtons.Count - 1) - i)].ToString();
+                if (transact != 0)
+                {
+                    temp_counter++;
+                    Debug.Log("Executing Increamemnt" + temp_counter);
+                }
+                Debug.Log(temp_counter + " " + m_BetButtons.Count + " " + i + " " + (m_BetButtons.Count - i) + (temp_counter - ((m_BetButtons.Count - 1) - i)));
             }
         }
-        UpdateExternalPaytableValue();
     }
 
     internal void SelectBetButton(bool incdec)
@@ -461,8 +473,7 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                NextBets();
-                slotManager.BetCounter += 3;
+                NextBets(1);
             }
         }
         else
@@ -475,10 +486,11 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                PrevBets();
-                slotManager.BetCounter -= 3;
+                PrevBets(1);
             }
         }
+        UpdateExternalPaytableValue();
+        Debug.Log(string.Concat("<color=red><b>", "Bet Counter: " + slotManager.BetCounter + " Bet Data Counter: " + bet_data_counter, "</b></color>"));
     }
 
     private void ChangeBetToggle(int index)
@@ -495,16 +507,18 @@ public class UIManager : MonoBehaviour
     {
         bet_selected = 0;
         bet_data_counter = 0;
-        NextBets();
+        NextBets(0);
         ChangeBetToggle(bet_selected);
+        UpdateExternalPaytableValue();
     }
 
     internal void LastBetCounter()
     {
         bet_selected = 3;
         bet_data_counter = socketManager.initialData.Bets.Count - 1;
-        PrevBets();
+        PrevBets(0);
         ChangeBetToggle(bet_selected);
+        UpdateExternalPaytableValue();
     }
 
     private int GetBetCounter(Button m_Click_Button)

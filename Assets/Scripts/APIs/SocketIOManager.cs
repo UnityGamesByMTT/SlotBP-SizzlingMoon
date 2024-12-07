@@ -219,7 +219,7 @@ public class SocketIOManager : MonoBehaviour
     }
     private void OnSocketAlert(string data)
     {
-        Debug.Log("Received alert with data: " + data);
+        //Debug.Log("Received alert with data: " + data);
     }
 
     private void OnSocketOtherDevice(string data)
