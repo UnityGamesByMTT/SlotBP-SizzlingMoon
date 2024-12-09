@@ -299,7 +299,7 @@ public class SocketIOManager : MonoBehaviour
                 {
                     Debug.Log(String.Concat("<color=green><b>", jsonObject, "</b></color>"));
                     myData.message.GameData.FinalResultReel = ConvertListOfListsToStrings(myData.message.GameData.ResultReel);
-                    myData.message.GameData.FinalsymbolsToEmit = TransformAndRemoveRecurring(myData.message.GameData.symbolsToEmit);
+                    myData.message.GameData.FinalsymbolsToEmit = TransformAndRemoveRecurring(ConvertToNestedList(myData.message.GameData.symbolsToEmit));
                     resultData = myData.message.GameData;
                     playerdata = myData.message.PlayerData;
                     isResultdone = true;
@@ -394,6 +394,36 @@ public class SocketIOManager : MonoBehaviour
         return outputList;
     }
 
+    public static List<List<string>> ConvertToNestedList(List<string> symbolsToEmit)
+    {
+        // Create a dictionary to group coordinates by their row (second value).
+        var groupedCoordinates = new Dictionary<int, List<string>>();
+
+        foreach (var coordinate in symbolsToEmit)
+        {
+            var parts = coordinate.Split(',');
+            if (parts.Length != 2)
+                throw new FormatException($"Invalid coordinate format: {coordinate}");
+
+            int x = int.Parse(parts[0]);
+            int y = int.Parse(parts[1]);
+
+            // Group coordinates by the row (y value)
+            if (!groupedCoordinates.ContainsKey(y))
+                groupedCoordinates[y] = new List<string>();
+
+            groupedCoordinates[y].Add(coordinate);
+        }
+
+        // Convert the grouped dictionary into a List<List<string>>
+        var result = groupedCoordinates
+            .OrderBy(pair => pair.Key) // Ensure rows are in order
+            .Select(pair => pair.Value) // Extract lists of coordinates
+            .ToList();
+
+        return result;
+    }
+
     private List<string> TransformAndRemoveRecurring(List<List<string>> originalList)
     {
         // Flattened list
@@ -472,7 +502,8 @@ public class GameData
     public List<int> autoSpin { get; set; }
     public List<List<string>> ResultReel { get; set; }
     public List<int> linesToEmit { get; set; }
-    public List<List<string>> symbolsToEmit { get; set; }
+    //public List<List<string>> symbolsToEmit { get; set; }
+    public List<string> symbolsToEmit { get; set; }
     public double WinAmout { get; set; }
     public FreeSpins freeSpins { get; set; }
     public bool isFreeSpin { get; set; }
@@ -481,9 +512,9 @@ public class GameData
     public List<FrozenIndex> frozenIndices { get; set; }
     public bool isGrandPrize { get; set; }
     public bool isMoonJackpot { get; set; }
-    public List<object> moonMysteryData { get; set; }
+    public List<MoonMysteryDatum> moonMysteryData { get; set; }
     public bool isStickyBonus { get; set; }
-    public List<object> stickyBonusValue { get; set; }
+    public List<StickyBonusValue> stickyBonusValue { get; set; }
     public List<string> FinalsymbolsToEmit { get; set; }
     public List<string> FinalResultReel { get; set; }
     public double jackpot { get; set; }
@@ -576,6 +607,23 @@ public class Symbol
 
 [Serializable]
 public class FrozenIndex
+{
+    public List<int> position { get; set; }
+    public int prizeValue { get; set; }
+    public int symbol { get; set; }
+}
+
+[Serializable]
+public class StickyBonusValue
+{
+    public List<int> position { get; set; }
+    public int prizeValue { get; set; }
+    public int value { get; set; }
+    public int symbol { get; set; }
+}
+
+[Serializable]
+public class MoonMysteryDatum
 {
     public List<int> position { get; set; }
     public int prizeValue { get; set; }

@@ -419,47 +419,55 @@ public class UIManager : MonoBehaviour
 
     #region [[===BET BUTTONS HANDLING===]]
 
-    internal void NextBets(int transact)
+    internal void ChangeBets(int transact, bool incDec)
     {
         //HACK: The below code may be work accurately with out using bet_data_counter
         int temp_counter = slotManager.BetCounter;
-        for(int i = 0; i < m_BetButtons.Count; i++)
+        for (int i = 0; i < m_BetButtons.Count; i++)
         {
-            if(slotManager.BetCounter < socketManager.initialData.Bets.Count - 1)
+            Button tempButton = m_BetButtons[i];
+            if (incDec)
             {
-                Button tempButton = m_BetButtons[i];
-                tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = socketManager.initialData.Bets[transact != 0 ? temp_counter - ((m_BetButtons.Count - 1) - i) : temp_counter].ToString();
-                if (transact == 0)
+                if (slotManager.BetCounter < socketManager.initialData.Bets.Count - 1)
                 {
-                    temp_counter++;
-                    Debug.Log("Executing Increamemnt" + temp_counter);
+                    tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = socketManager.initialData.Bets[transact != 0 ? temp_counter - ((m_BetButtons.Count - 1) - i) : temp_counter].ToString();
+                    if (transact == 0)
+                    {
+                        temp_counter++;
+                    }
                 }
-                Debug.Log(temp_counter + " " + m_BetButtons.Count + " " + i + " " + (m_BetButtons.Count - i) + (temp_counter - ((m_BetButtons.Count - 1) - i)));
+            }
+            else
+            {
+                if (slotManager.BetCounter >= 0)
+                {
+                    tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = socketManager.initialData.Bets[transact != 0 ? temp_counter : temp_counter - ((m_BetButtons.Count - 1) - i)].ToString();
+                    if (transact != 0)
+                    {
+                        temp_counter++;
+                    }
+                }
             }
         }
     }
 
-    internal void PrevBets(int transact)
-    {
-        //HACK: The below code may be work accurately with out using bet_data_counter
-        int temp_counter = slotManager.BetCounter;
-        //if (slotManager.BetCounter == 3) temp_counter++;
-        for (int i = 0; i < m_BetButtons.Count; i++)
-        {
-            if (slotManager.BetCounter >= 0)
-            {
-                Button tempButton = m_BetButtons[i];
-                //tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = socketManager.initialData.Bets[transact != 0 ? temp_counter - ((m_BetButtons.Count - 1) - i) : temp_counter].ToString();
-                tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = socketManager.initialData.Bets[transact != 0 ? temp_counter : temp_counter - ((m_BetButtons.Count - 1) - i)].ToString();
-                if (transact != 0)
-                {
-                    temp_counter++;
-                    Debug.Log("Executing Increamemnt" + temp_counter);
-                }
-                Debug.Log(temp_counter + " " + m_BetButtons.Count + " " + i + " " + (m_BetButtons.Count - i) + (temp_counter - ((m_BetButtons.Count - 1) - i)));
-            }
-        }
-    }
+    //internal void PrevBets(int transact)
+    //{
+    //    //HACK: The below code may be work accurately with out using bet_data_counter
+    //    int temp_counter = slotManager.BetCounter;
+    //    for (int i = 0; i < m_BetButtons.Count; i++)
+    //    {
+    //        if (slotManager.BetCounter >= 0)
+    //        {
+    //            Button tempButton = m_BetButtons[i];
+    //            tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = socketManager.initialData.Bets[transact != 0 ? temp_counter : temp_counter - ((m_BetButtons.Count - 1) - i)].ToString();
+    //            if (transact != 0)
+    //            {
+    //                temp_counter++;
+    //            }
+    //        }
+    //    }
+    //}
 
     internal void SelectBetButton(bool incdec)
     {
@@ -473,7 +481,8 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                NextBets(1);
+                //NextBets(1);
+                ChangeBets(1, incdec);
             }
         }
         else
@@ -486,11 +495,12 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                PrevBets(1);
+                //PrevBets(1);
+                ChangeBets(1, incdec);
             }
         }
         UpdateExternalPaytableValue();
-        Debug.Log(string.Concat("<color=red><b>", "Bet Counter: " + slotManager.BetCounter + " Bet Data Counter: " + bet_data_counter, "</b></color>"));
+        //Debug.Log(string.Concat("<color=red><b>", "Bet Counter: " + slotManager.BetCounter + " Bet Data Counter: " + bet_data_counter, "</b></color>"));
     }
 
     private void ChangeBetToggle(int index)
@@ -507,7 +517,8 @@ public class UIManager : MonoBehaviour
     {
         bet_selected = 0;
         bet_data_counter = 0;
-        NextBets(0);
+        //NextBets(0);
+        ChangeBets(0, true);
         ChangeBetToggle(bet_selected);
         UpdateExternalPaytableValue();
     }
@@ -516,7 +527,8 @@ public class UIManager : MonoBehaviour
     {
         bet_selected = 3;
         bet_data_counter = socketManager.initialData.Bets.Count - 1;
-        PrevBets(0);
+        //PrevBets(0);
+        ChangeBets(0, false);
         ChangeBetToggle(bet_selected);
         UpdateExternalPaytableValue();
     }

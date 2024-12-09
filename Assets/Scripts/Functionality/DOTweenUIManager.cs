@@ -167,18 +167,18 @@ public class DOTweenUIManager : MonoBehaviour
         uiElement.DOColor(targetColor, duration);
     }
 
-    internal void MoveDir(Transform MainTransform, float End_Val, string Dir, float Duration)
+    internal void MoveDir(Transform MainTransform, float End_Val, string Dir, float Duration, Action OnProcessCompelete)
     {
         switch (Dir.ToUpper())
         {
             case "X":
-                MainTransform.DOMoveX(End_Val, Duration);
+                MainTransform.DOMoveX(End_Val, Duration).OnComplete(() => { OnProcessCompelete?.Invoke(); });
                 break;
             case "Y":
-                MainTransform.DOMoveY(End_Val, Duration);
+                MainTransform.DOMoveY(End_Val, Duration).OnComplete(() => { OnProcessCompelete?.Invoke(); });
                 break;
             case "Z":
-                MainTransform.DOMoveZ(End_Val, Duration);
+                MainTransform.DOMoveZ(End_Val, Duration).OnComplete(() => { OnProcessCompelete?.Invoke(); });
                 break;
         }
     }
