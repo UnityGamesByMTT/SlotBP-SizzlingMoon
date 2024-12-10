@@ -11,7 +11,7 @@ public class SlotBehaviour : MonoBehaviour
 {
     [Header("Sprites")]
     [SerializeField]
-    private Sprite[] myImages;  //images taken initially
+    internal Sprite[] myImages;  //images taken initially
 
     [Header("Slot Images")]
     [SerializeField]
@@ -31,7 +31,7 @@ public class SlotBehaviour : MonoBehaviour
     [SerializeField]
     private Transform[] Slot_Transform;
     [SerializeField]
-    private Transform[] Slot_ShowTransform;
+    internal Transform[] Slot_ShowTransform;
 
     [Header("Line Button Objects")]
     [SerializeField]
@@ -48,7 +48,8 @@ public class SlotBehaviour : MonoBehaviour
     private Button SlotStart_Button;
     [SerializeField]
     private Button AutoSpin_Button;
-    [SerializeField] private Button AutoSpinStop_Button;
+    [SerializeField]
+    private Button AutoSpinStop_Button;
     [SerializeField]
     private Button MaxBet_Button;
     [SerializeField]
@@ -60,21 +61,39 @@ public class SlotBehaviour : MonoBehaviour
 
     [Header("Animated Sprites")]
     [SerializeField]
-    private Sprite[] Cat_Sprite;
+    private Sprite[] m_Seven_Sprites;
     [SerializeField]
-    private Sprite[] Eagle_Sprite;
+    private Sprite[] m_Nine_Sprites;
     [SerializeField]
-    private Sprite[] Bear_Sprite;
+    private Sprite[] m_Ten_Sprites;
     [SerializeField]
-    private Sprite[] Wolf_Sprite;
+    private Sprite[] m_A_Sprites;
     [SerializeField]
-    private Sprite[] Buffalo_Sprite;
+    private Sprite[] m_J_Sprites;
     [SerializeField]
-    private Sprite[] Gold_Buffalo;
+    private Sprite[] m_K_Sprites;
     [SerializeField]
-    private Sprite[] Landscape_Sprite;
+    private Sprite[] m_Q_Sprites;
     [SerializeField]
-    private Sprite[] Bonus_Sprite;
+    private Sprite[] m_Star_Sprites;
+    [SerializeField]
+    private Sprite[] m_Wild_Sprites;
+    [SerializeField]
+    private Sprite[] m_Bonus_Sprites;
+    [SerializeField]
+    private Sprite[] m_StickyBonus_Sprites;
+    [SerializeField]
+    private Sprite[] m_Mystery_Sprites;
+    [SerializeField]
+    private Sprite[] m_MoonMystery_Sprites;
+    [SerializeField]
+    private Sprite[] m_Mini_Sprites;
+    [SerializeField]
+    private Sprite[] m_Minor_Sprites;
+    [SerializeField]
+    private Sprite[] m_Major_Sprites;
+    [SerializeField]
+    private Sprite[] m_Moon_Sprites;
 
     [Header("Miscellaneous UI")]
     [SerializeField]
@@ -130,7 +149,7 @@ public class SlotBehaviour : MonoBehaviour
     private List<OrderingUI> m_UI_Order = new List<OrderingUI>();
 
     [SerializeField]
-    private List<Sticky> m_Sticky = new List<Sticky>();
+    internal List<Sticky> m_Sticky = new List<Sticky>();
 
     [SerializeField]
     private Transform m_DoubleCover;
@@ -140,6 +159,7 @@ public class SlotBehaviour : MonoBehaviour
     private Coroutine tweenroutine;
     private Coroutine TweenSpinning = null;
     private Coroutine CoverInitCoroutine = null;
+    private Coroutine FreeSpinInitRoutine = null;
 
     private bool IsAutoSpin = false;
     private bool IsFreeSpin = false;
@@ -289,6 +309,20 @@ public class SlotBehaviour : MonoBehaviour
         if (FSBoard_Object) FSBoard_Object.SetActive(false);
         ToggleButtonGrp(true);
         IsFreeSpin = false;
+        _bonusManager.ResetBonus();
+    }
+
+    private void StopFreeSpin()
+    {
+        if (FSBoard_Object) FSBoard_Object.SetActive(false);
+        ToggleButtonGrp(true);
+        IsFreeSpin = false;
+        _bonusManager.ResetBonus();
+        if(FreeSpinRoutine != null)
+        {
+            StopCoroutine(FreeSpinRoutine);
+            FreeSpinRoutine = null;
+        }
     }
     #endregion
 
@@ -429,67 +463,65 @@ public class SlotBehaviour : MonoBehaviour
     }
 
     //function to populate animation sprites accordingly
-    private void PopulateAnimationSprites(ImageAnimation animScript, int val)
+    internal void PopulateAnimationSprites(ImageAnimation animScript, int val)
     {
         animScript.textureArray.Clear();
         animScript.textureArray.TrimExcess();
         switch (val)
         {
+            case 0:
+                foreach(Sprite i in m_Seven_Sprites) { animScript.textureArray.Add(i); }
+                break;
+            case 1:
+                foreach (Sprite i in m_Nine_Sprites) { animScript.textureArray.Add(i); }
+                break;
+            case 2:
+                foreach (Sprite i in m_Ten_Sprites) { animScript.textureArray.Add(i); }
+                break;
+            case 3:
+                foreach (Sprite i in m_A_Sprites) { animScript.textureArray.Add(i); }
+                break;
+            case 4:
+                foreach (Sprite i in m_J_Sprites) { animScript.textureArray.Add(i); }
+                break;
+            case 5:
+                //foreach (Sprite i in m_Seven_Sprites) { animScript.textureArray.Add(i); }
+                break;
             case 6:
-                for (int i = 0; i < Cat_Sprite.Length; i++)
-                {
-                    animScript.textureArray.Add(Cat_Sprite[i]);
-                }
-                animScript.AnimationSpeed = 60f;
+                //foreach (Sprite i in m_Seven_Sprites) { animScript.textureArray.Add(i); }
                 break;
             case 7:
-                for (int i = 0; i < Eagle_Sprite.Length; i++)
-                {
-                    animScript.textureArray.Add(Eagle_Sprite[i]);
-                }
-                animScript.AnimationSpeed = 60f;
+                //foreach (Sprite i in m_Seven_Sprites) { animScript.textureArray.Add(i); }
                 break;
             case 8:
-                for (int i = 0; i < Bear_Sprite.Length; i++)
-                {
-                    animScript.textureArray.Add(Bear_Sprite[i]);
-                }
-                animScript.AnimationSpeed = 30f;
+                //foreach (Sprite i in m_Seven_Sprites) { animScript.textureArray.Add(i); }
                 break;
             case 9:
-                for (int i = 0; i < Wolf_Sprite.Length; i++)
-                {
-                    animScript.textureArray.Add(Wolf_Sprite[i]);
-                }
-                animScript.AnimationSpeed = 60f;
+                foreach (Sprite i in m_Wild_Sprites) { animScript.textureArray.Add(i); }
                 break;
             case 10:
-                for (int i = 0; i < Buffalo_Sprite.Length; i++)
-                {
-                    animScript.textureArray.Add(Buffalo_Sprite[i]);
-                }
-                animScript.AnimationSpeed = 50f;
+                //foreach (Sprite i in m_Seven_Sprites) { animScript.textureArray.Add(i); }
                 break;
             case 11:
-                for (int i = 0; i < Gold_Buffalo.Length; i++)
-                {
-                    animScript.textureArray.Add(Gold_Buffalo[i]);
-                }
-                animScript.AnimationSpeed = 20f;
+                //foreach (Sprite i in m_Seven_Sprites) { animScript.textureArray.Add(i); }
                 break;
             case 12:
-                for (int i = 0; i < Landscape_Sprite.Length; i++)
-                {
-                    animScript.textureArray.Add(Landscape_Sprite[i]);
-                }
-                animScript.AnimationSpeed = 50f;
+                foreach (Sprite i in m_Mystery_Sprites) { animScript.textureArray.Add(i); }
                 break;
             case 13:
-                for (int i = 0; i < Bonus_Sprite.Length; i++)
-                {
-                    animScript.textureArray.Add(Bonus_Sprite[i]);
-                }
-                animScript.AnimationSpeed = 30f;
+                foreach (Sprite i in m_MoonMystery_Sprites) { animScript.textureArray.Add(i); }
+                break;
+            case 14:
+                foreach (Sprite i in m_Mini_Sprites) { animScript.textureArray.Add(i); }
+                break;
+            case 15:
+                foreach (Sprite i in m_Minor_Sprites) { animScript.textureArray.Add(i); }
+                break;
+            case 16:
+                foreach (Sprite i in m_Major_Sprites) { animScript.textureArray.Add(i); }
+                break;
+            case 17:
+                foreach (Sprite i in m_Moon_Sprites) { animScript.textureArray.Add(i); }
                 break;
         }
     }
@@ -576,7 +608,8 @@ public class SlotBehaviour : MonoBehaviour
             }
         }
 
-        StartStickyBonus();
+        _bonusManager.StartStickyBonus();
+        _bonusManager.StartFreezeBonus();
 
         yield return new WaitForSeconds(m_Is_Turtle ? 0.7f : m_Is_Rabbit ? 0.5f : 0.3f);
 
@@ -639,10 +672,12 @@ public class SlotBehaviour : MonoBehaviour
             yield return new WaitForSeconds(2f);
             IsSpinning = false;
         }
-        if (SocketManager.resultData.isFreeSpin)
+        if (SocketManager.resultData.isFreeSpin && !SocketManager.resultData.isMoonJackpot && !SocketManager.resultData.isGrandPrize)
         {
             if (!IsFreeSpin)
             {
+                FreeSpinInitRoutine = StartCoroutine(_bonusManager.FreeSpinInitAnimRoutine());
+                yield return FreeSpinInitRoutine;
                 uiManager.FreeSpinProcess((int)SocketManager.resultData.freeSpinCount);
             }
             else
@@ -655,6 +690,8 @@ public class SlotBehaviour : MonoBehaviour
                         StopCoroutine(FreeSpinRoutine);
                         FreeSpinRoutine = null;
                     }
+                    FreeSpinInitRoutine = StartCoroutine(_bonusManager.FreeSpinInitAnimRoutine());
+                    yield return FreeSpinInitRoutine;
                     uiManager.FreeSpinProcess((int)SocketManager.resultData.freeSpinCount);
                 }
             }
@@ -664,17 +701,41 @@ public class SlotBehaviour : MonoBehaviour
                 yield return new WaitForSeconds(0.1f);
             }
         }
+        else
+        {
+            if(SocketManager.resultData.isMoonJackpot)
+            {
+                StopFreeSpin();
+                Debug.Log("Moon Jackpot Received...");
+            }
+            else if (SocketManager.resultData.isGrandPrize)
+            {
+                StopFreeSpin();
+                Debug.Log("Grand Prize Received...");
+            }
+        }
     }
 
     private void PopulateResult()
     {
-        //for(int i = 0; i < SocketManager.resultData.FinalsymbolsToEmit.Count; i++)
-        //{
-        //    PopulateAnimationSprites(m_ShowTempImages[SocketManager.resultData.FinalsymbolsToEmit[i][0]]
-        //        .slotImages[SocketManager.resultData.FinalsymbolsToEmit[i][1]],
+        int row = 0;
+        int col = 0;
+        for (int i = 0; i < SocketManager.resultData.FinalsymbolsToEmit.Count; i++)
+        {
+            row = SocketManager.resultData.FinalsymbolsToEmit[i][0];
+            col = SocketManager.resultData.FinalsymbolsToEmit[i][1];
+            PopulateAnimationSprites(m_ShowTempImages[row]
+                .slotImages[col].transform.GetChild(2).GetComponent<ImageAnimation>(),
+                GetValueFromMatrix(row, col)
+                );
+        }
+    }
 
-        //        );
-        //}
+    internal int GetValueFromMatrix(int row, int col)
+    {
+        int value = 0;
+        value = int.Parse(SocketManager.resultData.ResultReel[row][col]);
+        return value;
     }
 
     private IEnumerator InitCoverTween()
@@ -699,43 +760,32 @@ public class SlotBehaviour : MonoBehaviour
             {
                 yield return new WaitForSeconds(0.08f);
                 m_ShowTempImages[j].slotImages[i].gameObject.SetActive(true);
-                m_ShowTempImages[j].slotImages[i].transform.GetChild(2).GetComponent<Image>().sprite = myImages[int.Parse(SocketManager.resultData.ResultReel[i][j])];
-                if (!GetSticky(m_ShowTempImages[j].slotImages[i].transform, false))
-                    InitializeShowTweening(m_ShowTempImages[j].slotImages[i].transform.GetChild(2));
+                if (IsFreeSpin || SocketManager.resultData.isFreeSpin)
+                {
+                    if(SocketManager.resultData.BonusResultReel.Count > 0)
+                    {
+                        m_ShowTempImages[j].slotImages[i].transform.GetChild(2).GetComponent<Image>().sprite = myImages[SocketManager.resultData.BonusResultReel[i][j]];
+                    }
+                    else
+                    {
+                        m_ShowTempImages[j].slotImages[i].transform.GetChild(2).GetComponent<Image>().sprite = myImages[int.Parse(SocketManager.resultData.ResultReel[i][j])];
+                    }
+                    if (!_bonusManager.GetFreezed(m_ShowTempImages[j].slotImages[i].transform, false))
+                        InitializeShowTweening(m_ShowTempImages[j].slotImages[i].transform.GetChild(2));
+
+                    //Debug.Log(string.Concat("<color=yellow><b>", "Bonus Executed...", "</b></color>"));
+                }
+                else
+                {
+                    m_ShowTempImages[j].slotImages[i].transform.GetChild(2).GetComponent<Image>().sprite = myImages[int.Parse(SocketManager.resultData.ResultReel[i][j])];
+                    if (!_bonusManager.GetSticky(m_ShowTempImages[j].slotImages[i].transform, false))
+                        InitializeShowTweening(m_ShowTempImages[j].slotImages[i].transform.GetChild(2));
+
+                    //Debug.Log(string.Concat("<color=red><b>", "Bonus Not Executed...", "</b></color>"));
+                }
                 m_ShowTempImages[j].slotImages[i].transform.GetChild(1).GetComponent<ImageAnimation>().StartAnimation();
             }
             yield return new WaitForSeconds(0.2f);
-        }
-    }
-
-    private void StartStickyBonus()
-    {
-        int row = 0;
-        int col = 0;
-        if (SocketManager.resultData.isStickyBonus)
-        {
-            for(int i = 0; i < SocketManager.resultData.stickyBonusValue.Count; i ++)
-            {
-                row = SocketManager.resultData.stickyBonusValue[i].position[0];
-                col = SocketManager.resultData.stickyBonusValue[i].position[1];
-
-                if(!CheckSticky(m_ShowTempImages[row].slotImages[col].transform))
-                    m_Sticky.Add(new Sticky
-                    {
-                        m_Transform = m_ShowTempImages[row].slotImages[col].transform, m_Count = SocketManager.resultData.stickyBonusValue[i].value
-                    });
-            }
-        }
-    }
-
-    private void StartMoonMysteryBonus()
-    {
-        if (SocketManager.resultData.isMoonJackpot)
-        {
-            for(int i = 0; i < SocketManager.resultData.moonMysteryData.Count; i++)
-            {
-
-            }
         }
     }
 
@@ -745,54 +795,12 @@ public class SlotBehaviour : MonoBehaviour
         {
             for(int j = 0; j < m_ShowTempImages[i].slotImages.Count; j++)
             {
-                if(!GetSticky(m_ShowTempImages[i].slotImages[j].transform, true))
+                if(!_bonusManager.GetSticky(m_ShowTempImages[i].slotImages[j].transform, true))
                 {
                     m_ShowTempImages[i].slotImages[j].gameObject.SetActive(false);
                 }
             }
         }
-    }
-
-    private bool CheckSticky(Transform m_Transform)
-    {
-        for(int i = 0; i < m_Sticky.Count; i++)
-        {
-            if(m_Sticky[i].m_Transform == m_Transform)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private bool GetSticky(Transform m_transform, bool start_stop)
-    {
-        for(int i = 0; i < m_Sticky.Count; i ++)
-        {
-            if(m_Sticky[i].m_Transform == m_transform)
-            {
-                if (start_stop && m_Sticky[i].m_Count > 0)
-                {
-                    Sticky sticky = m_Sticky[i];
-                    sticky.m_Count--;
-                    m_Sticky[i] = sticky;
-                    if(m_Sticky[i].m_Count == 0)
-                    {
-                        m_Sticky.Remove(m_Sticky[i]);
-                        m_Sticky.TrimExcess();
-                    }
-                    return true;
-                }
-                else
-                {
-                    if (!start_stop)
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     private void BalanceDeduction()
@@ -849,7 +857,7 @@ public class SlotBehaviour : MonoBehaviour
 
     internal void CheckBonusGame()
     {
-        _bonusManager.StartBonus((int)SocketManager.resultData.BonusStopIndex);
+        //_bonusManager.StartBonus((int)SocketManager.resultData.BonusStopIndex);
     }
 
     //generate the payout lines generated 

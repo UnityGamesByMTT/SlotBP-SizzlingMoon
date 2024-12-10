@@ -8,143 +8,208 @@ using TMPro;
 public class BonusController : MonoBehaviour
 {
     [SerializeField]
-    private Button Spin_Button;
+    private SocketIOManager m_SocketManager;
     [SerializeField]
-    private RectTransform Wheel_Transform;
+    private UIManager m_UIManager;
     [SerializeField]
-    private BoxCollider2D[] point_colliders;
+    private SlotBehaviour m_SlotBehaviour;
     [SerializeField]
-    private TMP_Text[] Bonus_Text;
-    [SerializeField]
-    private GameObject Bonus_Object;
-    [SerializeField]
-    private SlotBehaviour slotManager;
-    [SerializeField]
-    private AudioController _audioManager;
-    [SerializeField]
-    private GameObject PopupPanel;
-    [SerializeField]
-    private Transform Win_Transform;
-    [SerializeField]
-    private Transform Loose_Transform;
+    private ImageAnimation m_FreeSpinInitAnimation;
 
-    internal bool isCollision = false;
+    private bool isFreezeRunning = false;
 
-    private Tween wheelRoutine;
-
-    private float elasticIntensity = 5f;
-
-    private int stopIndex = 0;
-
-
-    private void Start()
+    #region STICKY BONUS
+    internal void StartStickyBonus()
     {
-        if (Spin_Button) Spin_Button.onClick.RemoveAllListeners();
-        if (Spin_Button) Spin_Button.onClick.AddListener(Spinbutton);
-    }
-
-    internal void StartBonus(int stop)
-    {
-        ResetColliders();
-        if (PopupPanel) PopupPanel.SetActive(false);
-        if (Win_Transform) Win_Transform.gameObject.SetActive(false);
-        if (Loose_Transform) Loose_Transform.gameObject.SetActive(false);
-        if (_audioManager) _audioManager.SwitchBGSound(true);
-        if (Spin_Button) Spin_Button.interactable = true;
-        stopIndex = stop;
-        if (Bonus_Object) Bonus_Object.SetActive(true);
-    }
-
-    private void Spinbutton()
-    {
-        isCollision = false;
-        if (Spin_Button) Spin_Button.interactable = false;
-        RotateWheel();
-        DOVirtual.DelayedCall(2f, () =>
+        int row = 0;
+        int col = 0;
+        if (m_SocketManager.resultData.isStickyBonus)
         {
-            TurnCollider(stopIndex);
-        });
-    }
+            for (int i = 0; i < m_SocketManager.resultData.stickyBonusValue.Count; i++)
+            {
+                row = m_SocketManager.resultData.stickyBonusValue[i].position[0];
+                col = m_SocketManager.resultData.stickyBonusValue[i].position[1];
 
-    internal void PopulateWheel(List<string> bonusdata)
-    {
-        for (int i = 0; i < bonusdata.Count; i++)
-        {
-            if (bonusdata[i] == "-1") 
-            {
-                if (Bonus_Text[i]) Bonus_Text[i].text = "NO \nBONUS";
-            }
-            else
-            {
-                if (Bonus_Text[i]) Bonus_Text[i].text = bonusdata[i];
+                if (!CheckSticky(m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform))
+                    m_SlotBehaviour.m_Sticky.Add(new Sticky
+                    {
+                        m_Transform = m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform,
+                        m_Count = m_SocketManager.resultData.stickyBonusValue[i].value
+                    });
             }
         }
     }
 
-    private void RotateWheel()
+    private bool CheckSticky(Transform m_Transform)
     {
-        if (Wheel_Transform) Wheel_Transform.localEulerAngles = new Vector3(0, 0, 359);
-        if (Wheel_Transform) wheelRoutine =  Wheel_Transform.DORotate(new Vector3(0, 0, 0), 1, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1);
-        _audioManager.PlayBonusAudio("cycleSpin");
+        for (int i = 0; i < m_SlotBehaviour.m_Sticky.Count; i++)
+        {
+            if (m_SlotBehaviour.m_Sticky[i].m_Transform == m_Transform)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
-    private void ResetColliders()
+    internal bool GetSticky(Transform m_transform, bool start_stop)
     {
-        foreach(BoxCollider2D col in point_colliders)
+        for (int i = 0; i < m_SlotBehaviour.m_Sticky.Count; i++)
         {
-            col.enabled = false;
+            if (m_SlotBehaviour.m_Sticky[i].m_Transform == m_transform)
+            {
+                if (start_stop && m_SlotBehaviour.m_Sticky[i].m_Count > 0)
+                {
+                    Sticky sticky = m_SlotBehaviour.m_Sticky[i];
+                    sticky.m_Count--;
+                    m_SlotBehaviour.m_Sticky[i] = sticky;
+                    if (m_SlotBehaviour.m_Sticky[i].m_Count == 0)
+                    {
+                        m_SlotBehaviour.m_Sticky.Remove(m_SlotBehaviour.m_Sticky[i]);
+                        m_SlotBehaviour.m_Sticky.TrimExcess();
+                    }
+                    return true;
+                }
+                else
+                {
+                    if (!start_stop)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    #endregion
+
+    #region FREEZE BONUS
+    internal void StartFreezeBonus()
+    {
+        int row = 0;
+        int col = 0;
+        //PopulateFreeSpinResult();
+        if (m_SocketManager.resultData.isFreeSpin)
+        {
+            if(!isFreezeRunning)
+            {
+                ResetBonus();
+                isFreezeRunning = true;
+                //Debug.Log("Executed...");
+            }
+
+            //if (m_SocketManager.resultData.BonusResultReel.Count > 0)
+            //    PopulateFreeSpinResult();
+
+            for (int i = 0; i < m_SocketManager.resultData.frozenIndices.Count; i++)
+            {
+                row = m_SocketManager.resultData.frozenIndices[i].position[0];
+                col = m_SocketManager.resultData.frozenIndices[i].position[1];
+
+                if (!CheckFreeze(m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform))
+                    m_SlotBehaviour.m_Sticky.Add(new Sticky
+                    {
+                        m_Transform = m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform,
+                        m_Count = m_SocketManager.resultData.frozenIndices[i].prizeValue
+                    });
+            }
         }
     }
 
-    private void TurnCollider(int point)
+    //HACK: May be used in future with backend
+    internal void PopulateFreeSpinResult()
     {
-        if (point_colliders[point]) point_colliders[point].enabled = true;
+        for (int i = 0; i < m_SlotBehaviour.Tempimages.Count; i++)
+        {
+            for (int j = 0; j < m_SlotBehaviour.Tempimages[i].slotImages.Count; j++)
+            {
+                m_SlotBehaviour.m_ShowTempImages[i].slotImages[j].transform.GetChild(2).GetComponent<Image>().sprite = m_SlotBehaviour.myImages[m_SocketManager.resultData.BonusResultReel[i][j]];
+            }
+        }
+
+        //int row = 0;
+        //int col = 0;
+        //for (int i = 0; i < m_SocketManager.resultData.FinalsymbolsToEmit.Count; i++)
+        //{
+        //    row = m_SocketManager.resultData.FinalResultReel[i][0];
+        //    col = m_SocketManager.resultData.FinalResultReel[i][1];
+        //    m_SlotBehaviour.PopulateAnimationSprites(m_SlotBehaviour.m_ShowTempImages[row]
+        //        .slotImages[col].transform.GetChild(2).GetComponent<ImageAnimation>(),
+        //        m_SlotBehaviour.GetValueFromMatrix(row, col)
+        //        );
+        //}
     }
 
-    internal void StopWheel()
+    private bool CheckFreeze(Transform m_Transform)
     {
-        if (wheelRoutine != null)
+        for (int i = 0; i < m_SlotBehaviour.m_Sticky.Count; i++)
         {
-            wheelRoutine.Pause(); // Pause the rotation
-
-            // Apply an elastic effect to the paused rotation
-            Wheel_Transform.DORotate(Wheel_Transform.eulerAngles + Vector3.forward * Random.Range(-elasticIntensity, elasticIntensity), 1f)
-                .SetEase(Ease.OutElastic);
+            if (m_SlotBehaviour.m_Sticky[i].m_Transform == m_Transform)
+            {
+                return true;
+            }
         }
-        if (Bonus_Text[stopIndex].text.Equals("NO \nBONUS")) 
+        return false;
+    }
+
+    internal bool GetFreezed(Transform m_transform, bool start_stop)
+    {
+        for (int i = 0; i < m_SlotBehaviour.m_Sticky.Count; i++)
         {
-            if (Loose_Transform) Loose_Transform.gameObject.SetActive(true);
-            if (Loose_Transform) Loose_Transform.localScale = Vector3.zero;
-            if (PopupPanel) PopupPanel.SetActive(true);
-            if (Loose_Transform) Loose_Transform.DOScale(Vector3.one, 1f);
-            PlayWinLooseSound(false);
+            if (m_SlotBehaviour.m_Sticky[i].m_Transform == m_transform)
+            {
+                if (start_stop && m_SlotBehaviour.m_Sticky[i].m_Count > 0)
+                {
+                    Sticky sticky = m_SlotBehaviour.m_Sticky[i];
+                    //sticky.m_Count--;
+                    m_SlotBehaviour.m_Sticky[i] = sticky;
+                    if (m_SlotBehaviour.m_Sticky[i].m_Count == 0)
+                    {
+                        m_SlotBehaviour.m_Sticky.Remove(m_SlotBehaviour.m_Sticky[i]);
+                        m_SlotBehaviour.m_Sticky.TrimExcess();
+                    }
+                    return true;
+                }
+                else
+                {
+                    if (!start_stop)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    #endregion
+
+    internal void FreeSpinInitAnimation(bool startStop)
+    {
+        if (startStop)
+        {
+            m_FreeSpinInitAnimation.gameObject.SetActive(true);
+            m_FreeSpinInitAnimation.StartAnimation();
         }
         else
         {
-            if (Win_Transform) Win_Transform.gameObject.SetActive(true);
-            if (Win_Transform) Win_Transform.localScale = Vector3.zero;
-            if (PopupPanel) PopupPanel.SetActive(true);
-            if (Win_Transform) Win_Transform.DOScale(Vector3.one, 1f);
-            PlayWinLooseSound(true);
+            m_FreeSpinInitAnimation.gameObject.SetActive(false);
+            m_FreeSpinInitAnimation.StopAnimation();
         }
-        DOVirtual.DelayedCall(3f, () =>
-        {
-            ResetColliders();
-            if (_audioManager) _audioManager.SwitchBGSound(false);
-            if (Bonus_Object) Bonus_Object.SetActive(false);
-            slotManager.CheckWinPopups();
-        });
     }
 
-    internal void PlayWinLooseSound(bool isWin)
+    internal IEnumerator FreeSpinInitAnimRoutine()
     {
-        if (isWin)
-        {
-            _audioManager.PlayBonusAudio("win");
-        }
-        else
-        {
-            _audioManager.PlayBonusAudio("lose");
-        }
+        FreeSpinInitAnimation(true);
+
+        yield return new WaitForSeconds(2f);
+
+        FreeSpinInitAnimation(false);
+    }
+
+    internal void ResetBonus()
+    {
+        isFreezeRunning = false;
+        m_SlotBehaviour.m_Sticky.Clear();
+        m_SlotBehaviour.m_Sticky.TrimExcess();
     }
 }

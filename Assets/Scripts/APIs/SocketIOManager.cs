@@ -494,7 +494,7 @@ public class GameData
 {
     public List<List<string>> Reel { get; set; }
     public List<List<int>> Lines { get; set; }
-    public List<List<int>> BonusReel { get; set; }
+    public List<List<int>> BonusResultReel { get; set; }
     public List<SpecialBonusSymbolMuliplier> specialBonusSymbolMulipliers { get; set; }
     public List<double> Bets { get; set; }
     public bool canSwitchLines { get; set; }
