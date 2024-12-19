@@ -593,6 +593,7 @@ public class UIManager : MonoBehaviour
     {
         if (MainPopup_Object) MainPopup_Object.SetActive(false);
         if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(false);
+        FreeSpin_Button.GetComponent<ImageAnimation>().StartAnimation();
         slotManager.FreeSpin(spins);
     }
 

@@ -299,7 +299,8 @@ public class SocketIOManager : MonoBehaviour
                 {
                     Debug.Log(String.Concat("<color=green><b>", jsonObject, "</b></color>"));
                     myData.message.GameData.FinalResultReel = ConvertListOfListsToStrings(myData.message.GameData.ResultReel);
-                    myData.message.GameData.FinalsymbolsToEmit = TransformAndRemoveRecurring(ConvertToNestedList(myData.message.GameData.symbolsToEmit));
+                    //myData.message.GameData.FinalsymbolsToEmit = TransformAndRemoveRecurring(ConvertToNestedList(myData.message.GameData.symbolsToEmit));
+                    myData.message.GameData.FinalValuesToEmit = ConvertToNestedList(myData.message.GameData.symbolsToEmit);
                     resultData = myData.message.GameData;
                     playerdata = myData.message.PlayerData;
                     isResultdone = true;
@@ -516,6 +517,7 @@ public class GameData
     public bool isStickyBonus { get; set; }
     public List<StickyBonusValue> stickyBonusValue { get; set; }
     public List<string> FinalsymbolsToEmit { get; set; }
+    public List<List<string>> FinalValuesToEmit { get; set; }
     public List<string> FinalResultReel { get; set; }
     public double jackpot { get; set; }
     public bool isBonus { get; set; }

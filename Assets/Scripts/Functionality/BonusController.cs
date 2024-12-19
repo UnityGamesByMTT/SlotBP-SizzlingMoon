@@ -15,6 +15,8 @@ public class BonusController : MonoBehaviour
     private SlotBehaviour m_SlotBehaviour;
     [SerializeField]
     private ImageAnimation m_FreeSpinInitAnimation;
+    [SerializeField]
+    private ImageAnimation m_FreeSpinExitAnimation;
 
     private bool isFreezeRunning = false;
 
@@ -36,6 +38,8 @@ public class BonusController : MonoBehaviour
                         m_Transform = m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform,
                         m_Count = m_SocketManager.resultData.stickyBonusValue[i].value
                     });
+                m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(3).gameObject.SetActive(true);
+                m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = m_SocketManager.resultData.stickyBonusValue[i].value.ToString();
             }
         }
     }
@@ -197,6 +201,20 @@ public class BonusController : MonoBehaviour
         }
     }
 
+    internal void FreeSpinExitAnimation(bool startStop)
+    {
+        if (startStop)
+        {
+            m_FreeSpinExitAnimation.gameObject.SetActive(true);
+            m_FreeSpinExitAnimation.StartAnimation();
+        }
+        else
+        {
+            m_FreeSpinExitAnimation.gameObject.SetActive(false);
+            m_FreeSpinExitAnimation.StopAnimation();
+        }
+    }
+
     internal IEnumerator FreeSpinInitAnimRoutine()
     {
         FreeSpinInitAnimation(true);
@@ -204,6 +222,23 @@ public class BonusController : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         FreeSpinInitAnimation(false);
+    }
+
+    internal IEnumerator FreeSpinExitAnimRoutine(string m_winningtype)
+    {
+        FreeSpinExitAnimation(true);
+
+        yield return new WaitForSeconds(1f);
+
+        m_FreeSpinExitAnimation.transform.GetChild(0).gameObject.SetActive(true);
+        DOTweenUIManager.Instance.FadeIn(m_FreeSpinExitAnimation.transform.GetChild(0).GetComponent<CanvasGroup>(), 1f);
+        m_FreeSpinExitAnimation.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = m_winningtype;
+        m_FreeSpinExitAnimation.transform.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = m_SocketManager.playerdata.currentWining.ToString();
+
+        yield return new WaitForSeconds(4f);
+
+        m_FreeSpinExitAnimation.transform.GetChild(0).gameObject.SetActive(false);
+        FreeSpinExitAnimation(false);
     }
 
     internal void ResetBonus()

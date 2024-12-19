@@ -611,8 +611,9 @@ public class SlotBehaviour : MonoBehaviour
         _bonusManager.StartStickyBonus();
         _bonusManager.StartFreezeBonus();
 
-        yield return new WaitForSeconds(m_Is_Turtle ? 0.7f : m_Is_Rabbit ? 0.5f : 0.3f);
+        yield return new WaitForSeconds(m_Is_Turtle ? 0.3f : m_Is_Rabbit ? 0.2f : 0.1f);
 
+        PopulateResult();
         TweenSpinning = StartCoroutine(LevelOrderTraversal());
 
         yield return TweenSpinning;
@@ -632,7 +633,7 @@ public class SlotBehaviour : MonoBehaviour
         //HACK: Check For The Result And Activate Animations Accordingly
         //CheckPayoutLineBackend(SocketManager.resultData.linesToEmit, SocketManager.resultData.FinalsymbolsToEmit, SocketManager.resultData.jackpot);
         //m_AnimationController.StartAnimation();
-        PopulateResult();
+        //PopulateResult();
 
         //HACK: Kills The Tweens So That They Will Get Ready For Next Spin
         KillAllTweens();
@@ -705,11 +706,15 @@ public class SlotBehaviour : MonoBehaviour
         {
             if(SocketManager.resultData.isMoonJackpot)
             {
+                FreeSpinInitRoutine = StartCoroutine(_bonusManager.FreeSpinExitAnimRoutine("Received Moon Jackpot"));
+                yield return FreeSpinInitRoutine;
                 StopFreeSpin();
                 Debug.Log("Moon Jackpot Received...");
             }
             else if (SocketManager.resultData.isGrandPrize)
             {
+                FreeSpinInitRoutine = StartCoroutine(_bonusManager.FreeSpinExitAnimRoutine("Received Grand Jackpot"));
+                yield return FreeSpinInitRoutine;
                 StopFreeSpin();
                 Debug.Log("Grand Prize Received...");
             }
@@ -720,14 +725,16 @@ public class SlotBehaviour : MonoBehaviour
     {
         int row = 0;
         int col = 0;
-        for (int i = 0; i < SocketManager.resultData.FinalsymbolsToEmit.Count; i++)
+        for (int i = 0; i < SocketManager.resultData.symbolsToEmit.Count; i++)
         {
-            row = SocketManager.resultData.FinalsymbolsToEmit[i][0];
-            col = SocketManager.resultData.FinalsymbolsToEmit[i][1];
-            PopulateAnimationSprites(m_ShowTempImages[row]
-                .slotImages[col].transform.GetChild(2).GetComponent<ImageAnimation>(),
+            //Debug.Log(SocketManager.resultData.symbolsToEmit[i].Split(',')[0] + " " + SocketManager.resultData.symbolsToEmit[i].Split(',')[1]);
+            row = int.Parse(SocketManager.resultData.symbolsToEmit[i].Split(',')[0]);
+            col = int.Parse(SocketManager.resultData.symbolsToEmit[i].Split(',')[1]);
+            PopulateAnimationSprites(m_ShowTempImages[col]
+                .slotImages[row].transform.GetChild(2).GetComponent<ImageAnimation>(),
                 GetValueFromMatrix(row, col)
                 );
+            Debug.Log(row + " " + col + " " + GetValueFromMatrix(row, col));
         }
     }
 
@@ -783,7 +790,10 @@ public class SlotBehaviour : MonoBehaviour
 
                     //Debug.Log(string.Concat("<color=red><b>", "Bonus Not Executed...", "</b></color>"));
                 }
+                ImageAnimation anim = m_ShowTempImages[j].slotImages[i].transform.GetChild(2).GetComponent<ImageAnimation>();
                 m_ShowTempImages[j].slotImages[i].transform.GetChild(1).GetComponent<ImageAnimation>().StartAnimation();
+                if(anim.textureArray.Count > 0)
+                    anim.StartAnimation();
             }
             yield return new WaitForSeconds(0.2f);
         }
@@ -798,6 +808,8 @@ public class SlotBehaviour : MonoBehaviour
                 if(!_bonusManager.GetSticky(m_ShowTempImages[i].slotImages[j].transform, true))
                 {
                     m_ShowTempImages[i].slotImages[j].gameObject.SetActive(false);
+                    m_ShowTempImages[i].slotImages[j].transform.GetChild(1).GetComponent<ImageAnimation>().StopAnimation();
+                    m_ShowTempImages[i].slotImages[j].transform.GetChild(3).gameObject.SetActive(false);
                 }
             }
         }
