@@ -193,6 +193,12 @@ public class UIManager : MonoBehaviour
     private TMP_Text m_Minor_Value;
     [SerializeField]
     private TMP_Text m_Mini_Value;
+    [SerializeField]
+    private TMP_Text m_Paytable_Mini_Value;
+    [SerializeField]
+    private TMP_Text m_Paytable_Minor_Value;
+    [SerializeField]
+    private TMP_Text m_Paytable_Major_Value;
 
     [Header("Paytable Navigation")]
     [SerializeField]
@@ -677,6 +683,13 @@ public class UIManager : MonoBehaviour
         StartPopupAnim(amount);
     }
 
+    internal void EnableDisableSpeed(bool m_toggle)
+    {
+        m_Turtle_Speed_Button.interactable = m_toggle;
+        m_Rabbit_Speed_Button.interactable = m_toggle;
+        m_Cheetah_Speed_Button.interactable = m_toggle;
+    }
+
     private void StartFreeSpins(int spins)
     {
         if (MainPopup_Object) MainPopup_Object.SetActive(false);
@@ -689,7 +702,8 @@ public class UIManager : MonoBehaviour
     {
         FreeSpins = spins;
         if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(true);
-        if (Free_Text) Free_Text.text = spins.ToString() + " Free spins awarded.";
+        //if (Free_Text) Free_Text.text = spins.ToString() + " Free spins awarded.";
+        if (Free_Text) Free_Text.text = "Received " + spins.ToString() + " Free Spins";
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
     }
 
@@ -748,31 +762,31 @@ public class UIManager : MonoBehaviour
             }
             if (paylines.symbols[i].Multiplier[2][0] != 0)
             {
-                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[2][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>13x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[2][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[3][0] != 0)
             {
-                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[3][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>12x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[3][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[4][0] != 0)
             {
-                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[4][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>11x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[4][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[5][0] != 0)
             {
-                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[5][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>10x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[5][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[6][0] != 0)
             {
-                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[6][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>9x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[6][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[7][0] != 0)
             {
-                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[7][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>8x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[7][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[8][0] != 0)
             {
-                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[8][0] + " FUN</b></color>";
+                text += "<color=orange><b>7x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[8][0] + " FUN</b></color>";
             }
             if (SymbolsText[i]) SymbolsText[i].text = text;
         }
@@ -794,6 +808,15 @@ public class UIManager : MonoBehaviour
             if (paylines.symbols[i].Name.ToUpper() == "MINI")
             {
                 if (Mini_Text) Mini_Text.text = paylines.symbols[i].description.ToString();
+                //if (m_Paytable_Mini_Value && paylines.symbols[i].Multiplier[0][0] != 0) m_Paytable_Mini_Value.text = paylines.symbols[i].Multiplier[0][0].ToString() + "X";
+            }
+            if(paylines.symbols[i].Name.ToUpper() == "MINOR")
+            {
+                //if (m_Paytable_Minor_Value && paylines.symbols[i].Multiplier[0][0] != 0) m_Paytable_Minor_Value.text = paylines.symbols[i].Multiplier[0][0].ToString() + "X";
+            }
+            if (paylines.symbols[i].Name.ToUpper() == "MAJOR")
+            {
+                //if (m_Paytable_Major_Value && paylines.symbols[i].Multiplier[0][0] != 0) m_Paytable_Major_Value.text = paylines.symbols[i].Multiplier[0][0].ToString() + "X";
             }
             if (paylines.symbols[i].Name.ToUpper() == "WILD")
             {
