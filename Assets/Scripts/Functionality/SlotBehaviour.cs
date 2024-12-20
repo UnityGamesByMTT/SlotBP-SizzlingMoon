@@ -913,6 +913,7 @@ public class SlotBehaviour : MonoBehaviour
         if (BetPlus_Button) BetPlus_Button.interactable = toggle;
         if (m_BetButton) m_BetButton.interactable = toggle;
         if (m_Deactivated_BetPanel) m_Deactivated_BetPanel.SetActive(!toggle);
+        uiManager.EnableDisableSpeed(toggle);
     }
 
     //start the icons animation
