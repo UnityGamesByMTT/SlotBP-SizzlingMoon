@@ -5,161 +5,170 @@ using System;
 
 public class AudioController : MonoBehaviour
 {
-    [SerializeField] private AudioSource bg_adudio;
-    [SerializeField] internal AudioSource audioPlayer_wl;
-    [SerializeField] internal AudioSource audioPlayer_button;
-    [SerializeField] internal AudioSource audioSpin_button;
-    [SerializeField] private AudioClip[] clips;
-    [SerializeField] private AudioClip[] Bonusclips;
-    [SerializeField] private AudioSource bg_audioBonus;
-    [SerializeField] private AudioSource audioPlayer_Bonus;
+    [SerializeField] private AudioListener m_MainAudioListener;
+    [SerializeField] private AudioSource m_NormalButton_Audio;
+    [SerializeField] private AudioSource m_SpinButton_Audio;
+    [SerializeField] private AudioSource m_Spinning_Audio;
+    [SerializeField] private AudioSource m_BG_Music;
+    [SerializeField] private AudioSource m_Bet_Button;
+    //[SerializeField] private AudioSource m_FreeSpinEnc_Sound;
+    [SerializeField] private AudioSource m_NormalWin_Sound;
+    [SerializeField] private AudioSource m_BigWin_Sound;
+    [SerializeField] private AudioSource m_MegaWin_Sound;
+    [SerializeField] private AudioSource m_GoldCount_Audio;
+    //[SerializeField] private AudioSource m_Bull_Audio;
+
+    [SerializeField] private bool m_MutedMusic = false;
+    [SerializeField] private bool m_MutedSound = false;
 
     private void Start()
     {
-        if (bg_adudio) bg_adudio.Play();
-        audioPlayer_button.clip = clips[clips.Length-1];
-        audioSpin_button.clip = clips[clips.Length-2];
+        if (m_BG_Music) m_BG_Music.Play();
     }
 
-    internal void CheckFocusFunction(bool focus, bool IsSpinning)
+    internal void CheckFocusFunction(bool focus)
     {
+        //m_MainAudioListener.enabled = focus;
         if (!focus)
         {
-            bg_adudio.Pause();
-            audioPlayer_wl.Pause();
-            audioPlayer_button.Pause();
+            //m_MainAudioListener.enabled = focus;
+            MuteUnmute(Sound.All, true, false);
         }
         else
         {
-            if (!bg_adudio.mute) bg_adudio.UnPause();
-            if (IsSpinning)
-            {
-                if (!audioPlayer_wl.mute) audioPlayer_wl.UnPause();
-            }
-            else
-            {
-                StopWLAaudio();
-            }
-            if (!audioPlayer_button.mute) audioPlayer_button.UnPause();
-
+            //m_MainAudioListener.enabled = focus;
+            MuteUnmute(Sound.All, false, false);
         }
     }
 
-    internal void SwitchBGSound(bool isbonus)
+    internal void PlayNormalButton()
     {
-        if(isbonus)
+        if (m_MainAudioListener.enabled) m_NormalButton_Audio.Play();
+    }
+
+    internal void PlaySpinButton()
+    {
+        if (m_MainAudioListener.enabled) m_SpinButton_Audio.Play();
+    }
+
+    internal void PlayBetButton()
+    {
+        if (m_MainAudioListener.enabled) m_Bet_Button.Play();
+    }
+
+    //internal void PlayFreeSpin_Enc()
+    //{
+    //    if (m_MainAudioListener.enabled) m_FreeSpinEnc_Sound.Play();
+    //}
+
+    internal void PlayGold_Enc()
+    {
+        if (m_MainAudioListener.enabled) m_GoldCount_Audio.Play();
+    }
+
+    //internal void PlayBull_Audio()
+    //{
+    //    if (m_MainAudioListener.enabled) m_Bull_Audio.Play();
+    //}
+
+    internal void PlaySpinAudio(bool m_play_pause)
+    {
+        switch (m_play_pause)
         {
-            if (bg_audioBonus) bg_audioBonus.enabled = true;
-            if (bg_adudio) bg_adudio.enabled = false;
+            case true:
+                if (m_MainAudioListener.enabled) m_Spinning_Audio.Play();
+                break;
+            case false:
+                if (m_MainAudioListener.enabled) m_Spinning_Audio.Stop();
+                break;
         }
-        else
+    }
+
+    internal void PlayWin(Sound win)
+    {
+        switch (win)
         {
-            if (bg_audioBonus) bg_audioBonus.enabled = false;
-            if (bg_adudio) bg_adudio.enabled = true;
+            case Sound.NormalWin:
+                if (m_MainAudioListener.enabled) m_NormalWin_Sound.Play();
+                break;
+            case Sound.BigWin:
+                if (m_MainAudioListener.enabled) m_BigWin_Sound.Play();
+                break;
+            case Sound.MegaWin:
+                if (m_MainAudioListener.enabled) m_MegaWin_Sound.Play();
+                break;
         }
     }
 
-    internal void PlayWLAudio(string type)
+    internal void MuteUnmute(Sound sound, bool toggle, bool config)
     {
-        audioPlayer_wl.loop = false;
-        int index = 0;
-        switch (type)
+        switch (sound)
         {
-            case "spin":
-                index = 0;
-                audioPlayer_wl.loop = true;
+            case Sound.Music:
+                m_BG_Music.mute = toggle;
+                m_MutedMusic = toggle;
                 break;
-            case "win":
-                index = 1;
+            case Sound.Sound:
+                m_NormalButton_Audio.mute = toggle;
+                m_SpinButton_Audio.mute = toggle;
+                m_Spinning_Audio.mute = toggle;
+                m_GoldCount_Audio.mute = toggle;
+                m_NormalWin_Sound.mute = toggle;
+                m_BigWin_Sound.mute = toggle;
+                m_MegaWin_Sound.mute = toggle;
+                m_Bet_Button.mute = toggle;
+                //m_FreeSpinEnc_Sound.mute = toggle;
+                //m_Bull_Audio.mute = toggle;
+                m_MutedSound = toggle;
                 break;
-            case "lose":
-                index = 2;
-                break;
-            case "spinStop":
-                index = 3;
-                break;
-            case "megaWin":
-                index = 4;
-                break;
-        }
-        StopWLAaudio();
-        audioPlayer_wl.clip = clips[index];
-        audioPlayer_wl.Play();
-
-    }
-
-    internal void PlayBonusAudio(string type)
-    {
-        audioPlayer_wl.loop = false;
-        int index = 0;
-        switch (type)
-        {
-            case "win":
-                index = 0;
-                break;
-            case "lose":
-                index = 1;
-                break;
-            case "cycleSpin":
-                index = 2;
-                break;
-        }
-        StopBonusAaudio();
-        audioPlayer_Bonus.clip = Bonusclips[index];
-        audioPlayer_Bonus.Play();
-
-    }
-
-    internal void PlayButtonAudio()
-    {
-        audioPlayer_button.Play();
-    }
-
-    internal void PlaySpinButtonAudio()
-    {
-        audioSpin_button.Play();
-    }
-
-    internal void StopWLAaudio()
-    {
-        audioPlayer_wl.Stop();
-        audioPlayer_wl.loop = false;
-    }
-
-    internal void StopBonusAaudio()
-    {
-        audioPlayer_Bonus.Stop();
-        audioPlayer_Bonus.loop = false;
-    }
-
-    internal void StopBgAudio()
-    {
-        bg_adudio.Stop();
-    }
-
-    internal void ToggleMute(bool toggle, string type="all")
-    {
-        switch (type)
-        {
-            case "bg":
-                bg_adudio.mute = toggle;
-                bg_audioBonus.mute = toggle;
-                break;
-            case "button":
-                audioPlayer_button.mute=toggle;
-                audioSpin_button.mute=toggle;
-                break;
-            case "wl":
-                audioPlayer_wl.mute=toggle;
-                audioPlayer_Bonus.mute = toggle;
-                break;
-            case "all":
-                audioPlayer_wl.mute = toggle;
-                bg_adudio.mute = toggle;
-                audioPlayer_button.mute = toggle;
-                audioSpin_button.mute = toggle;
+            case Sound.All:
+                //Debug.Log("Toggle Is: " + toggle + " " + " Config Is: " + config);
+                if (config || (!config && toggle))
+                {
+                    m_NormalButton_Audio.mute = toggle;
+                    m_SpinButton_Audio.mute = toggle;
+                    m_Spinning_Audio.mute = toggle;
+                    m_GoldCount_Audio.mute = toggle;
+                    m_NormalWin_Sound.mute = toggle;
+                    m_BigWin_Sound.mute = toggle;
+                    m_MegaWin_Sound.mute = toggle;
+                    m_Bet_Button.mute = toggle;
+                    //m_FreeSpinEnc_Sound.mute = toggle;
+                    m_BG_Music.mute = toggle;
+                    //m_Bull_Audio.mute = toggle;
+                }
+                else
+                {
+                    if (!m_MutedMusic)
+                    {
+                        m_BG_Music.mute = toggle;
+                    }
+                    if (!m_MutedSound)
+                    {
+                        m_NormalButton_Audio.mute = toggle;
+                        m_SpinButton_Audio.mute = toggle;
+                        m_Spinning_Audio.mute = toggle;
+                        m_GoldCount_Audio.mute = toggle;
+                        m_NormalWin_Sound.mute = toggle;
+                        m_BigWin_Sound.mute = toggle;
+                        m_MegaWin_Sound.mute = toggle;
+                        m_Bet_Button.mute = toggle;
+                        //m_FreeSpinEnc_Sound.mute = toggle;
+                        //m_Bull_Audio.mute = toggle;
+                    }
+                }
                 break;
         }
     }
+}
 
+public enum Sound
+{
+    NormalWin,
+    BigWin,
+    MegaWin,
+    //Mute or Unmute Ids
+    All,
+    Music,
+    Sound,
 }
