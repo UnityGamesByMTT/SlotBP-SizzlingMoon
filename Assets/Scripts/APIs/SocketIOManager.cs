@@ -523,6 +523,8 @@ public class GameData
     public double jackpot { get; set; }
     public bool isBonus { get; set; }
     public double BonusStopIndex { get; set; }
+    public int allWildMultiplier { get; set; }
+    public bool isAllWild { get; set; }
 }
 
 [Serializable]

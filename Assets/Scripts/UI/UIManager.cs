@@ -522,8 +522,18 @@ public class UIManager : MonoBehaviour
             {
                 if (slotManager.BetCounter < socketManager.initialData.Bets.Count - 1)
                 {
-                    tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = socketManager.initialData.Bets[transact != 0 ? temp_counter - ((m_BetButtons.Count - 1) - i) : temp_counter].ToString();
-                    tempText.text = socketManager.initialData.Bets[transact != 0 ? temp_counter - ((m_BetButtons.Count - 1) - i) : temp_counter].ToString();
+                    int index = transact != 0 ? temp_counter - ((m_BetButtons.Count - 1) - i) : temp_counter;
+                    double counter = socketManager.initialData.Bets[index];
+                    Button curr_button = tempButton;
+
+                    tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = counter.ToString();
+                    tempText.text = counter.ToString();
+
+                    tempButton.onClick.AddListener(() =>
+                    {
+
+                    });
+
                     if (transact == 0)
                     {
                         temp_counter++;
@@ -534,8 +544,17 @@ public class UIManager : MonoBehaviour
             {
                 if (slotManager.BetCounter >= 0)
                 {
-                    tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = socketManager.initialData.Bets[transact != 0 ? temp_counter : temp_counter - ((m_BetButtons.Count - 1) - i)].ToString();
-                    tempText.text = socketManager.initialData.Bets[transact != 0 ? temp_counter : temp_counter - ((m_BetButtons.Count - 1) - i)].ToString();
+                    int index = transact != 0 ? temp_counter : temp_counter - ((m_BetButtons.Count - 1) - i);
+                    double counter = socketManager.initialData.Bets[index];
+                    Button curr_button = tempButton;
+
+                    tempButton.onClick.AddListener(() =>
+                    {
+
+                    });
+
+                    tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = counter.ToString();
+                    tempText.text = counter.ToString();
                     if (transact != 0)
                     {
                         temp_counter++;
@@ -604,7 +623,7 @@ public class UIManager : MonoBehaviour
             m_BetButtons[i].interactable = true;
         }
 
-        m_BetButtons[index].interactable = false;
+        m_BetButtons[index].interactable = index < m_BetButtons.Count ? false : true;
     }
 
     internal void StartBetCounter()
@@ -808,15 +827,15 @@ public class UIManager : MonoBehaviour
             if (paylines.symbols[i].Name.ToUpper() == "MINI")
             {
                 if (Mini_Text) Mini_Text.text = paylines.symbols[i].description.ToString();
-                //if (m_Paytable_Mini_Value && paylines.symbols[i].Multiplier[0][0] != 0) m_Paytable_Mini_Value.text = paylines.symbols[i].Multiplier[0][0].ToString() + "X";
+                if (m_Paytable_Mini_Value && socketManager.initialData.specialBonusSymbolMulipliers[0].value != 0) m_Paytable_Mini_Value.text = socketManager.initialData.specialBonusSymbolMulipliers[0].value + "X";
             }
             if(paylines.symbols[i].Name.ToUpper() == "MINOR")
             {
-                //if (m_Paytable_Minor_Value && paylines.symbols[i].Multiplier[0][0] != 0) m_Paytable_Minor_Value.text = paylines.symbols[i].Multiplier[0][0].ToString() + "X";
+                if (m_Paytable_Minor_Value && socketManager.initialData.specialBonusSymbolMulipliers[1].value != 0) m_Paytable_Minor_Value.text = socketManager.initialData.specialBonusSymbolMulipliers[1].value + "X";
             }
             if (paylines.symbols[i].Name.ToUpper() == "MAJOR")
             {
-                //if (m_Paytable_Major_Value && paylines.symbols[i].Multiplier[0][0] != 0) m_Paytable_Major_Value.text = paylines.symbols[i].Multiplier[0][0].ToString() + "X";
+                if (m_Paytable_Major_Value && socketManager.initialData.specialBonusSymbolMulipliers[2].value != 0) m_Paytable_Major_Value.text = socketManager.initialData.specialBonusSymbolMulipliers[2].value + "X";
             }
             if (paylines.symbols[i].Name.ToUpper() == "WILD")
             {
