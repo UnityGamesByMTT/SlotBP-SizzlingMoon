@@ -773,39 +773,47 @@ public class UIManager : MonoBehaviour
             string text = null;
             if (paylines.symbols[i].Multiplier[0][0] != 0)
             {
-                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[0][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>16x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[0][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[1][0] != 0)
             {
-                text += "<color=orange><b>14x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[1][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[1][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[2][0] != 0)
             {
-                text += "<color=orange><b>13x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[2][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>14x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[2][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[3][0] != 0)
             {
-                text += "<color=orange><b>12x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[3][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>13x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[3][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[4][0] != 0)
             {
-                text += "<color=orange><b>11x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[4][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>12x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[4][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[5][0] != 0)
             {
-                text += "<color=orange><b>10x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[5][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>11x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[5][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[6][0] != 0)
             {
-                text += "<color=orange><b>9x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[6][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>10x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[6][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[7][0] != 0)
             {
-                text += "<color=orange><b>8x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[7][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>9x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[7][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[8][0] != 0)
             {
-                text += "<color=orange><b>7x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[8][0] + " FUN</b></color>";
+                text += "<color=orange><b>8x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[8][0] + " FUN</b></color> \n";
+            }
+            if (paylines.symbols[i].Multiplier[9][0] != 0)
+            {
+                text += "<color=orange><b>7x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[9][0] + " FUN</b></color> \n";
+            }
+            if (paylines.symbols[i].Multiplier[10][0] != 0)
+            {
+                text += "<color=orange><b>6x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[10][0] + " FUN</b></color>";
             }
             if (SymbolsText[i]) SymbolsText[i].text = text;
         }
