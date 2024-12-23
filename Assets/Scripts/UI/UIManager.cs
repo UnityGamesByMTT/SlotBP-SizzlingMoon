@@ -760,7 +760,7 @@ public class UIManager : MonoBehaviour
         if (Privacy_Button) Privacy_Button.onClick.RemoveAllListeners();
         if (Privacy_Button) Privacy_Button.onClick.AddListener(delegate { UrlButtons(PrivacyUrl); });
 
-        m_DeactivatedMaxBetButton.text = socketManager.initialData.Bets[socketManager.initialData.Bets.Count - 1].ToString();
+        //m_DeactivatedMaxBetButton.text = socketManager.initialData.Bets[socketManager.initialData.Bets.Count - 1].ToString();
 
         StartCoroutine(DownloadImage(AbtImgUrl));
         PopulateSymbolsPayout(symbolsText);
