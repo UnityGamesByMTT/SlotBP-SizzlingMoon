@@ -36,14 +36,15 @@ public class AnimationController : MonoBehaviour
         {
             for (int i = 0; i < SocketManager.resultData.symbolsToEmit.Count; i++)
             {
-                row = int.Parse(SocketManager.resultData.symbolsToEmit[i].Split(',')[0]);
-                col = int.Parse(SocketManager.resultData.symbolsToEmit[i].Split(',')[1]);
+                row = int.Parse(SocketManager.resultData.symbolsToEmit[i].Split(',')[1]);
+                col = int.Parse(SocketManager.resultData.symbolsToEmit[i].Split(',')[0]);
                 //PopulateAnimationSprites(m_ShowTempImages[col]
                 //    .slotImages[row].transform.GetChild(2).GetComponent<ImageAnimation>(),
                 //    GetValueFromMatrix(row, col)
                 //    );
                 GameObject obj = m_ShowTempImages[col].slotImages[row].gameObject;
                 obj.SetActive(true);
+                obj.transform.GetChild(1).GetComponent<ImageAnimation>().StartAnimation();
                 obj.transform.GetChild(2).GetComponent<Image>().sprite = m_SlotManager.myImages[int.Parse(SocketManager.resultData.ResultReel[row][col])];
 
             }

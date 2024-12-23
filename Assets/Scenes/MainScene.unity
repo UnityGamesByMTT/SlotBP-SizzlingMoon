@@ -5749,8 +5749,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1879b650e03124c95b3e541c29da6817, type: 2}
-  m_sharedMaterial: {fileID: 4488374881921247725, guid: 1879b650e03124c95b3e541c29da6817, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6617,8 +6617,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1879b650e03124c95b3e541c29da6817, type: 2}
-  m_sharedMaterial: {fileID: 4488374881921247725, guid: 1879b650e03124c95b3e541c29da6817, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7207,7 +7207,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: Collecting all 16 Bonus symbols of any type awards the GRAND Jackpot of
-    1000x player's bet, which is added to the total win!
+    100x player's bet, which is added to the total win!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7344,8 +7344,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1879b650e03124c95b3e541c29da6817, type: 2}
-  m_sharedMaterial: {fileID: 4488374881921247725, guid: 1879b650e03124c95b3e541c29da6817, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -14080,13 +14080,13 @@ MonoBehaviour:
   PaytableExit_Button: {fileID: 990849630}
   SymbolsText:
   - {fileID: 1452730989}
-  - {fileID: 196488775}
-  - {fileID: 1994981764}
+  - {fileID: 1609138031}
   - {fileID: 897429666}
-  - {fileID: 931681769}
   - {fileID: 2032239119}
   - {fileID: 1138710583}
-  - {fileID: 1609138031}
+  - {fileID: 931681769}
+  - {fileID: 1994981764}
+  - {fileID: 196488775}
   StickyBonus_Text: {fileID: 257849907}
   Bonus_Text: {fileID: 1267287965}
   Mystery_Text: {fileID: 1911626489}
@@ -30272,8 +30272,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1879b650e03124c95b3e541c29da6817, type: 2}
-  m_sharedMaterial: {fileID: 4488374881921247725, guid: 1879b650e03124c95b3e541c29da6817, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -35120,8 +35120,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1879b650e03124c95b3e541c29da6817, type: 2}
-  m_sharedMaterial: {fileID: 4488374881921247725, guid: 1879b650e03124c95b3e541c29da6817, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -51604,7 +51604,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: 'The Moon symbol can be drawn on the Moon Mystery symbol and awards the
-    MOON Jackpot of 2500x player''s bet!
+    MOON Jackpot of 500x player''s bet!
 
     The MOON Jackpot is the maximum prize
     in the game and Bonus symbol values are not added to it.'
@@ -51634,7 +51634,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30.8
+  m_fontSize: 31.45
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -52732,7 +52732,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1479842119
 RectTransform:
   m_ObjectHideFlags: 0
@@ -54213,8 +54213,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1879b650e03124c95b3e541c29da6817, type: 2}
-  m_sharedMaterial: {fileID: 4488374881921247725, guid: 1879b650e03124c95b3e541c29da6817, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -66555,7 +66555,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1952544024
 RectTransform:
   m_ObjectHideFlags: 0
@@ -68555,8 +68555,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1879b650e03124c95b3e541c29da6817, type: 2}
-  m_sharedMaterial: {fileID: 4488374881921247725, guid: 1879b650e03124c95b3e541c29da6817, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -69938,13 +69938,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myImages:
   - {fileID: 21300000, guid: 571fcfba97fb84b61916d4c945f8b28a, type: 3}
-  - {fileID: 21300000, guid: 1b23aaf49bc634f698d663c17ec61b13, type: 3}
-  - {fileID: 21300000, guid: 34b80a93f76e247c18f4e9d689c98d92, type: 3}
+  - {fileID: 21300000, guid: 28ed0518c7aaa4157b9153ed79de4dba, type: 3}
   - {fileID: 21300000, guid: f53fb4e05e44441b69ee8c9b3a6e11e2, type: 3}
-  - {fileID: 21300000, guid: 5e511e4f2d7c5416c98ca81c9c55a095, type: 3}
   - {fileID: 21300000, guid: b53e48f0cd0f34a1eb77cdb4d5049a3d, type: 3}
   - {fileID: 21300000, guid: c3f9d062ea6fa46008deb7ca45872a0e, type: 3}
-  - {fileID: 21300000, guid: 28ed0518c7aaa4157b9153ed79de4dba, type: 3}
+  - {fileID: 21300000, guid: 5e511e4f2d7c5416c98ca81c9c55a095, type: 3}
+  - {fileID: 21300000, guid: 34b80a93f76e247c18f4e9d689c98d92, type: 3}
+  - {fileID: 21300000, guid: 1b23aaf49bc634f698d663c17ec61b13, type: 3}
   - {fileID: 21300000, guid: 2b24af0ebec9b439ca5f16f7265a92a8, type: 3}
   - {fileID: 21300000, guid: e2d322f3ca52842248b470e73b88dc56, type: 3}
   - {fileID: 21300000, guid: 13633292dfa2449238ff944d22063e4c, type: 3}
@@ -70153,42 +70153,7 @@ MonoBehaviour:
   m_K_Sprites: []
   m_Q_Sprites: []
   m_Star_Sprites: []
-  m_Wild_Sprites:
-  - {fileID: 21300000, guid: eb290125358a34298823078da89dfaa7, type: 3}
-  - {fileID: 21300000, guid: 867a89bd077a84e59848628e76526416, type: 3}
-  - {fileID: 21300000, guid: 2b0e2847222d74b0198f2f7395cb6c78, type: 3}
-  - {fileID: 21300000, guid: 707a033c32e674d5689067351ea02afc, type: 3}
-  - {fileID: 21300000, guid: 74353febb493941239f537edec449ef9, type: 3}
-  - {fileID: 21300000, guid: 59ae63e93886a4766a6aab994a9db202, type: 3}
-  - {fileID: 21300000, guid: 5634af02466174620a32f9c1e27cf8be, type: 3}
-  - {fileID: 21300000, guid: 562b106552f2f4556b5f6682068f5518, type: 3}
-  - {fileID: 21300000, guid: 1f3aa28fb2ef04d138fb778ee8bcd7e7, type: 3}
-  - {fileID: 21300000, guid: 2e7b0eb6abb814d70af4be5a2ac00fa5, type: 3}
-  - {fileID: 21300000, guid: 7256f041c566b4c839d55c9ee063b018, type: 3}
-  - {fileID: 21300000, guid: f4f4834e8223c467392320ade4398354, type: 3}
-  - {fileID: 21300000, guid: 5bff88e1eb9744953bba0d0cb7f6d895, type: 3}
-  - {fileID: 21300000, guid: 6baadda75f39f4e5eb9aee4b6b44d062, type: 3}
-  - {fileID: 21300000, guid: 95c19e8a2f7a0441c8481c7ef6452839, type: 3}
-  - {fileID: 21300000, guid: f3ea63ef8ffdf461cb1bc37899329306, type: 3}
-  - {fileID: 21300000, guid: 00dc8c2244e5e4fdda643dd173ec18ad, type: 3}
-  - {fileID: 21300000, guid: 3ac925623c91142ffb1dbeed2ca705ed, type: 3}
-  - {fileID: 21300000, guid: 8716708fe619c4e559472b356d70e3d4, type: 3}
-  - {fileID: 21300000, guid: 32c1abebd71654e05985867ad3a17e22, type: 3}
-  - {fileID: 21300000, guid: f6c2674ef951348ce9919361540e96bd, type: 3}
-  - {fileID: 21300000, guid: 5ef794dbf2ea2425abe02ccf693b7f5a, type: 3}
-  - {fileID: 21300000, guid: bd069570fb2504ae79f6b688ac02bf7e, type: 3}
-  - {fileID: 21300000, guid: 82f877548ebd446cc975c26b06fd7907, type: 3}
-  - {fileID: 21300000, guid: d2da8d6c8a35440aa949499b403d98ee, type: 3}
-  - {fileID: 21300000, guid: ea1d0c59ecd774efc9ae82c28d1239b9, type: 3}
-  - {fileID: 21300000, guid: 79d6899f82c224565a0e1c974213a04f, type: 3}
-  - {fileID: 21300000, guid: d0168e15e8fe34dcfa02c0e2318b94eb, type: 3}
-  - {fileID: 21300000, guid: 7d44520fe13754ddba252df84e2b6f86, type: 3}
-  - {fileID: 21300000, guid: 5649e4f4bf7144145970859686f42942, type: 3}
-  - {fileID: 21300000, guid: 597d13406e73f4a9a8983c2f06fc930b, type: 3}
-  - {fileID: 21300000, guid: 6f68a18619a874a04ae82f439b39bd23, type: 3}
-  - {fileID: 21300000, guid: d47ea984b119f4b5391ae49a50fcf6c2, type: 3}
-  - {fileID: 21300000, guid: 4eea65fcc68de4faf863db33d0e09476, type: 3}
-  - {fileID: 21300000, guid: 932099be401524e2f805b9df54ff28b8, type: 3}
+  m_Wild_Sprites: []
   m_Bonus_Sprites: []
   m_StickyBonus_Sprites: []
   m_Mystery_Sprites:
@@ -71682,8 +71647,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1879b650e03124c95b3e541c29da6817, type: 2}
-  m_sharedMaterial: {fileID: 4488374881921247725, guid: 1879b650e03124c95b3e541c29da6817, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
