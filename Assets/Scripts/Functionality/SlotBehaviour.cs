@@ -181,7 +181,7 @@ public class SlotBehaviour : MonoBehaviour
     internal int BetCounter = 0;
     private double currentBalance = 0;
     private double currentTotalBet = 0;
-    protected int Lines = 20;
+    protected int Lines = 1;
     [SerializeField]
     private int IconSizeFactor = 100;       //set this parameter according to the size of the icon and spacing
     [SerializeField]
@@ -475,7 +475,7 @@ public class SlotBehaviour : MonoBehaviour
         if (TotalBet_text) TotalBet_text.text = (SocketManager.initialData.Bets[BetCounter] * Lines).ToString();
         if (TotalWin_text) TotalWin_text.text = "0.00";
         if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("f2");
-        if (MaxBet_Button) MaxBet_Button.transform.GetChild(0).GetComponent<TMP_Text>().text = SocketManager.initialData.Bets[SocketManager.initialData.Bets.Count - 1].ToString();
+        //if (MaxBet_Button) MaxBet_Button.transform.GetChild(0).GetComponent<TMP_Text>().text = SocketManager.initialData.Bets[SocketManager.initialData.Bets.Count - 1].ToString();
         //uiManager.LoadBetButtons(true);
         //uiManager.NextBets();
         uiManager.StartBetCounter();
@@ -617,6 +617,7 @@ public class SlotBehaviour : MonoBehaviour
         IsSpinning = true;
 
         ToggleButtonGrp(false);
+        ResetAllAnimations();
 
         //ResetRectSizes();
         StopLevelOrderTraversal();//HACK: Needed to be uncommented when needed
@@ -720,6 +721,11 @@ public class SlotBehaviour : MonoBehaviour
         //CheckPayoutLineBackend(SocketManager.resultData.linesToEmit, SocketManager.resultData.FinalsymbolsToEmit, SocketManager.resultData.jackpot);
         //m_AnimationController.StartAnimation();
         //PopulateResult();
+
+        if (SocketManager.playerdata.currentWining > 0)
+        {
+            m_AnimationController.StartAnimation();
+        }
 
         //HACK: Kills The Tweens So That They Will Get Ready For Next Spin
         KillAllTweens();
@@ -911,6 +917,20 @@ public class SlotBehaviour : MonoBehaviour
         }
     }
 
+    private void ResetAllAnimations()
+    {
+        for(int i = 0; i < m_ShowTempImages.Count; i++)
+        {
+            for (int j = 0; j < m_ShowTempImages[i].slotImages.Count; j++)
+            {
+                m_ShowTempImages[i].slotImages[j].transform.GetChild(2).GetComponent<ImageAnimation>().textureArray.Clear();
+                m_ShowTempImages[i].slotImages[j].transform.GetChild(2).GetComponent<ImageAnimation>().textureArray.TrimExcess();
+            }
+        }
+
+        m_AnimationController.ResetAnimation();
+    }
+
     private void BalanceDeduction()
     {
         double bet = 0;
@@ -1024,27 +1044,27 @@ public class SlotBehaviour : MonoBehaviour
         TempList.TrimExcess();
     }
 
-    private void ResetRectSizes()
-    {
-        for(int i = 0; i < Tempimages.Count; i++)
-        {
-            for(int j = 0; j < Tempimages[i].slotImages.Count; j++)
-            {
-                Tempimages[i].slotImages[j].rectTransform.sizeDelta = new Vector2(242, 185);
-                m_AnimationController.m_AnimatedSlots[i].slotImages[j].rectTransform.sizeDelta = new Vector2(242, 185);
-            }
-        }
+    //private void ResetRectSizes()
+    //{
+    //    for(int i = 0; i < Tempimages.Count; i++)
+    //    {
+    //        for(int j = 0; j < Tempimages[i].slotImages.Count; j++)
+    //        {
+    //            Tempimages[i].slotImages[j].rectTransform.sizeDelta = new Vector2(242, 185);
+    //            m_AnimationController.m_AnimatedSlots[i].slotImages[j].rectTransform.sizeDelta = new Vector2(242, 185);
+    //        }
+    //    }
 
-        foreach(var i in m_UI_Order)
-        {
-            //i.current_object.SetParent(i.this_parent);
-            i.current_object.SetSiblingIndex(i.child_index);
-            i.current_object.localPosition = i.current_position;
-        }
+    //    foreach(var i in m_UI_Order)
+    //    {
+    //        //i.current_object.SetParent(i.this_parent);
+    //        i.current_object.SetSiblingIndex(i.child_index);
+    //        i.current_object.localPosition = i.current_position;
+    //    }
 
-        m_UI_Order.Clear();
-        m_UI_Order.TrimExcess();
-    }
+    //    m_UI_Order.Clear();
+    //    m_UI_Order.TrimExcess();
+    //}
 
     private void PrioritizeList()
     {

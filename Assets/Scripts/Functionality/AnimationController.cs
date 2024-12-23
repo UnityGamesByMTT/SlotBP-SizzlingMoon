@@ -2,105 +2,64 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class AnimationController : MonoBehaviour
 {
     [SerializeField]
-    private Transform m_ParentSlotsHolder;
+    internal GameObject m_CoverPanel;
     [SerializeField]
-    internal List<SlotImage> m_AnimatedSlots;
+    private SlotBehaviour m_SlotManager;
     [SerializeField]
-    private List<AnimCords> m_Cords;
+    private SocketIOManager SocketManager;
     [SerializeField]
-    private SlotBehaviour m_SlotBehaviour;
+    private UIManager m_UIManager;
+    [SerializeField]
+    internal List<SlotImage> m_ShowTempImages;
+    private List<string> m_SymbolsToEmit = new List<string>();
 
-    private Coroutine m_AnimationRoutine;
-    private List<Tweener> m_SlotsAnim = new List<Tweener>();
-    private bool m_PlayingAnimation = false;
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Space))
+        {
+            StartAnimation();
+        }
+    }
 
     internal void StartAnimation()
     {
-        m_PlayingAnimation = true;
-        if(m_AnimationRoutine == null)
-            m_AnimationRoutine = StartCoroutine(ActivateAllAnimation());
-    }
-
-    internal void StopAnimation()
-    {
-        m_PlayingAnimation = false;
-        ResetAnimatedView();
-        if(m_AnimationRoutine != null)
-            StopCoroutine(m_AnimationRoutine);
-        m_AnimationRoutine = null;
-    }
-
-    private IEnumerator ActivateAllAnimation()
-    {
-        while (m_PlayingAnimation)
+        int row = 0;
+        int col = 0;
+        m_SymbolsToEmit = SocketManager.resultData.symbolsToEmit;
+        m_CoverPanel.SetActive(true);
+        if(m_SymbolsToEmit.Count > 0)
         {
-            foreach(var i in m_Cords)
+            for (int i = 0; i < SocketManager.resultData.symbolsToEmit.Count; i++)
             {
-                foreach(var k in i.m_Cords)
-                {
-                    ActivateAnimatedView(k.i, k.j);
-                }
+                row = int.Parse(SocketManager.resultData.symbolsToEmit[i].Split(',')[0]);
+                col = int.Parse(SocketManager.resultData.symbolsToEmit[i].Split(',')[1]);
+                //PopulateAnimationSprites(m_ShowTempImages[col]
+                //    .slotImages[row].transform.GetChild(2).GetComponent<ImageAnimation>(),
+                //    GetValueFromMatrix(row, col)
+                //    );
+                GameObject obj = m_ShowTempImages[col].slotImages[row].gameObject;
+                obj.SetActive(true);
+                obj.transform.GetChild(2).GetComponent<Image>().sprite = m_SlotManager.myImages[int.Parse(SocketManager.resultData.ResultReel[row][col])];
+
             }
-            yield return new WaitForSeconds(1f);
-            foreach (var i in m_Cords)
+        }
+    }
+
+    internal void ResetAnimation()
+    {
+        m_CoverPanel.SetActive(false);
+        for(int i = 0; i < m_ShowTempImages.Count; i++)
+        {
+            for (int j = 0; j < m_ShowTempImages[i].slotImages.Count; j++)
             {
-                foreach(var k in i.m_Cords)
-                {
-                    ActivateAnimatedView(k.i, k.j);
-                }
-                yield return new WaitForSeconds(2f);
-                ResetAnimatedView();
+                m_ShowTempImages[i].slotImages[j].gameObject.SetActive(false);
             }
-            yield return new WaitForSeconds(1f);
-            ResetAnimatedView();
         }
-    }
-
-    private void ActivateAnimatedView(int i, int j)
-    {
-        if (!m_ParentSlotsHolder.gameObject.activeSelf)
-        {
-            ResetAnimatedView();
-            m_ParentSlotsHolder.gameObject.SetActive(true);
-        }
-        m_AnimatedSlots[i].slotImages[j].gameObject.SetActive(true);
-        m_SlotBehaviour.Tempimages[i].slotImages[j].gameObject.SetActive(false);
-        //m_AnimatedSlots[i].slotImages[j].transform.DOScale(1.2f, 1);
-        if(m_AnimatedSlots[i].slotImages[j].gameObject.GetComponent<ImageAnimation>().textureArray.Count > 0)
-            m_AnimatedSlots[i].slotImages[j].gameObject.GetComponent<ImageAnimation>().StartAnimation();
-        else
-        {
-            var tween = m_AnimatedSlots[i].slotImages[j].gameObject.GetComponent<RectTransform>().DOScale(new Vector2(1.15f, 1.15f), .8f).SetLoops(-1, LoopType.Yoyo).SetDelay(0);
-            tween.Play();
-            m_SlotsAnim.Add(tween);
-        }
-    }
-
-    private void ResetAnimatedView()
-    {
-        //for(int i = 0; i < m_AnimatedSlots.Count; i++)
-        //{
-        //    for(int j = 0; j < m_AnimatedSlots[i].slotImages.Count; j++)
-        //    {
-        //        m_AnimatedSlots[i].slotImages[j].gameObject.SetActive(false);
-        //        m_SlotBehaviour.Tempimages[i].slotImages[j].gameObject.SetActive(true);
-        //        if (m_AnimatedSlots[i].slotImages[j].gameObject.GetComponent<ImageAnimation>().textureArray.Count > 0)
-        //            m_AnimatedSlots[i].slotImages[j].gameObject.GetComponent<ImageAnimation>().StopAnimation();
-        //        else
-        //            m_AnimatedSlots[i].slotImages[j].transform.localScale = new Vector3(1, 1, 1);
-        //    }
-        //}
-        //foreach(var i in m_SlotsAnim)
-        //{
-        //    i.Kill();
-        //}
-        //m_SlotsAnim.Clear();
-        //m_SlotsAnim.TrimExcess();
-        //m_ParentSlotsHolder.gameObject.SetActive(false);
     }
 }
 
