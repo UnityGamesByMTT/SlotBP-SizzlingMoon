@@ -116,6 +116,8 @@ public class BonusController : MonoBehaviour
                         m_Transform = m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform,
                         m_Count = m_SocketManager.resultData.frozenIndices[i].prizeValue
                     });
+                m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(4).gameObject.SetActive(true);
+                m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(4).GetComponent<TMP_Text>().text = m_SocketManager.resultData.frozenIndices[i].prizeValue.ToString();
             }
         }
     }
@@ -220,6 +222,8 @@ public class BonusController : MonoBehaviour
         FreeSpinInitAnimation(true);
 
         yield return new WaitForSeconds(2f);
+
+        m_UIManager.FreeSpinProcess((int)m_SocketManager.resultData.freeSpinCount);
 
         FreeSpinInitAnimation(false);
     }

@@ -193,6 +193,12 @@ public class UIManager : MonoBehaviour
     private TMP_Text m_Minor_Value;
     [SerializeField]
     private TMP_Text m_Mini_Value;
+    [SerializeField]
+    private TMP_Text m_Paytable_Mini_Value;
+    [SerializeField]
+    private TMP_Text m_Paytable_Minor_Value;
+    [SerializeField]
+    private TMP_Text m_Paytable_Major_Value;
 
     [Header("Paytable Navigation")]
     [SerializeField]
@@ -516,8 +522,18 @@ public class UIManager : MonoBehaviour
             {
                 if (slotManager.BetCounter < socketManager.initialData.Bets.Count - 1)
                 {
-                    tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = socketManager.initialData.Bets[transact != 0 ? temp_counter - ((m_BetButtons.Count - 1) - i) : temp_counter].ToString();
-                    tempText.text = socketManager.initialData.Bets[transact != 0 ? temp_counter - ((m_BetButtons.Count - 1) - i) : temp_counter].ToString();
+                    int index = transact != 0 ? temp_counter - ((m_BetButtons.Count - 1) - i) : temp_counter;
+                    double counter = socketManager.initialData.Bets[index];
+                    Button curr_button = tempButton;
+
+                    tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = counter.ToString();
+                    tempText.text = counter.ToString();
+
+                    tempButton.onClick.AddListener(() =>
+                    {
+
+                    });
+
                     if (transact == 0)
                     {
                         temp_counter++;
@@ -528,8 +544,17 @@ public class UIManager : MonoBehaviour
             {
                 if (slotManager.BetCounter >= 0)
                 {
-                    tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = socketManager.initialData.Bets[transact != 0 ? temp_counter : temp_counter - ((m_BetButtons.Count - 1) - i)].ToString();
-                    tempText.text = socketManager.initialData.Bets[transact != 0 ? temp_counter : temp_counter - ((m_BetButtons.Count - 1) - i)].ToString();
+                    int index = transact != 0 ? temp_counter : temp_counter - ((m_BetButtons.Count - 1) - i);
+                    double counter = socketManager.initialData.Bets[index];
+                    Button curr_button = tempButton;
+
+                    tempButton.onClick.AddListener(() =>
+                    {
+
+                    });
+
+                    tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = counter.ToString();
+                    tempText.text = counter.ToString();
                     if (transact != 0)
                     {
                         temp_counter++;
@@ -598,7 +623,7 @@ public class UIManager : MonoBehaviour
             m_BetButtons[i].interactable = true;
         }
 
-        m_BetButtons[index].interactable = false;
+        m_BetButtons[index].interactable = index < m_BetButtons.Count ? false : true;
     }
 
     internal void StartBetCounter()
@@ -677,6 +702,13 @@ public class UIManager : MonoBehaviour
         StartPopupAnim(amount);
     }
 
+    internal void EnableDisableSpeed(bool m_toggle)
+    {
+        m_Turtle_Speed_Button.interactable = m_toggle;
+        m_Rabbit_Speed_Button.interactable = m_toggle;
+        m_Cheetah_Speed_Button.interactable = m_toggle;
+    }
+
     private void StartFreeSpins(int spins)
     {
         if (MainPopup_Object) MainPopup_Object.SetActive(false);
@@ -689,7 +721,8 @@ public class UIManager : MonoBehaviour
     {
         FreeSpins = spins;
         if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(true);
-        if (Free_Text) Free_Text.text = spins.ToString() + " Free spins awarded.";
+        //if (Free_Text) Free_Text.text = spins.ToString() + " Free spins awarded.";
+        if (Free_Text) Free_Text.text = "Received " + spins.ToString() + " Free Spins";
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
     }
 
@@ -727,7 +760,7 @@ public class UIManager : MonoBehaviour
         if (Privacy_Button) Privacy_Button.onClick.RemoveAllListeners();
         if (Privacy_Button) Privacy_Button.onClick.AddListener(delegate { UrlButtons(PrivacyUrl); });
 
-        m_DeactivatedMaxBetButton.text = socketManager.initialData.Bets[socketManager.initialData.Bets.Count - 1].ToString();
+        //m_DeactivatedMaxBetButton.text = socketManager.initialData.Bets[socketManager.initialData.Bets.Count - 1].ToString();
 
         StartCoroutine(DownloadImage(AbtImgUrl));
         PopulateSymbolsPayout(symbolsText);
@@ -740,39 +773,47 @@ public class UIManager : MonoBehaviour
             string text = null;
             if (paylines.symbols[i].Multiplier[0][0] != 0)
             {
-                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[0][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>16x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[0][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[1][0] != 0)
             {
-                text += "<color=orange><b>14x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[1][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[1][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[2][0] != 0)
             {
-                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[2][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>14x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[2][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[3][0] != 0)
             {
-                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[3][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>13x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[3][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[4][0] != 0)
             {
-                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[4][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>12x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[4][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[5][0] != 0)
             {
-                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[5][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>11x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[5][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[6][0] != 0)
             {
-                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[6][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>10x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[6][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[7][0] != 0)
             {
-                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[7][0] + " FUN</b></color> \n";
+                text += "<color=orange><b>9x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[7][0] + " FUN</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[8][0] != 0)
             {
-                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[8][0] + " FUN</b></color>";
+                text += "<color=orange><b>8x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[8][0] + " FUN</b></color> \n";
+            }
+            if (paylines.symbols[i].Multiplier[9][0] != 0)
+            {
+                text += "<color=orange><b>7x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[9][0] + " FUN</b></color> \n";
+            }
+            if (paylines.symbols[i].Multiplier[10][0] != 0)
+            {
+                text += "<color=orange><b>6x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[10][0] + " FUN</b></color>";
             }
             if (SymbolsText[i]) SymbolsText[i].text = text;
         }
@@ -794,6 +835,15 @@ public class UIManager : MonoBehaviour
             if (paylines.symbols[i].Name.ToUpper() == "MINI")
             {
                 if (Mini_Text) Mini_Text.text = paylines.symbols[i].description.ToString();
+                if (m_Paytable_Mini_Value && socketManager.initialData.specialBonusSymbolMulipliers[0].value != 0) m_Paytable_Mini_Value.text = socketManager.initialData.specialBonusSymbolMulipliers[0].value + "X";
+            }
+            if(paylines.symbols[i].Name.ToUpper() == "MINOR")
+            {
+                if (m_Paytable_Minor_Value && socketManager.initialData.specialBonusSymbolMulipliers[1].value != 0) m_Paytable_Minor_Value.text = socketManager.initialData.specialBonusSymbolMulipliers[1].value + "X";
+            }
+            if (paylines.symbols[i].Name.ToUpper() == "MAJOR")
+            {
+                if (m_Paytable_Major_Value && socketManager.initialData.specialBonusSymbolMulipliers[2].value != 0) m_Paytable_Major_Value.text = socketManager.initialData.specialBonusSymbolMulipliers[2].value + "X";
             }
             if (paylines.symbols[i].Name.ToUpper() == "WILD")
             {
