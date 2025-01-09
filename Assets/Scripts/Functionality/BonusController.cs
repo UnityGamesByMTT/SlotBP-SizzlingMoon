@@ -19,6 +19,7 @@ public class BonusController : MonoBehaviour
     private ImageAnimation m_FreeSpinExitAnimation;
 
     private bool isFreezeRunning = false;
+    internal bool isMysteryRunning = false;
 
     #region STICKY BONUS
     internal void StartStickyBonus()
@@ -38,8 +39,10 @@ public class BonusController : MonoBehaviour
                         m_Transform = m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform,
                         m_Count = m_SocketManager.resultData.stickyBonusValue[i].value
                     });
-                m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(3).gameObject.SetActive(true);
+                m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(3).gameObject.SetActive(m_SocketManager.resultData.stickyBonusValue[i].symbol == 11 ? true : false);
+                m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(4).gameObject.SetActive(true);
                 m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = m_SocketManager.resultData.stickyBonusValue[i].value.ToString();
+                m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(4).GetComponent<TMP_Text>().text = m_SocketManager.resultData.stickyBonusValue[i].prizeValue.ToString();
             }
         }
     }
@@ -69,8 +72,10 @@ public class BonusController : MonoBehaviour
                     m_SlotBehaviour.m_Sticky[i] = sticky;
                     if (m_SlotBehaviour.m_Sticky[i].m_Count == 0)
                     {
+                        m_SlotBehaviour.m_Sticky[i].m_Transform.GetChild(3).gameObject.SetActive(false);
                         m_SlotBehaviour.m_Sticky.Remove(m_SlotBehaviour.m_Sticky[i]);
                         m_SlotBehaviour.m_Sticky.TrimExcess();
+                        return false;
                     }
                     return true;
                 }
@@ -116,8 +121,12 @@ public class BonusController : MonoBehaviour
                         m_Transform = m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform,
                         m_Count = m_SocketManager.resultData.frozenIndices[i].prizeValue
                     });
-                m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(4).gameObject.SetActive(true);
-                m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(4).GetComponent<TMP_Text>().text = m_SocketManager.resultData.frozenIndices[i].prizeValue.ToString();
+                //if(m_SocketManager.resultData.frozenIndices[i].symbol > 11 && m_SocketManager.resultData.frozenIndices[i].symbol < 18)
+                if(m_SocketManager.resultData.frozenIndices[i].symbol < 12)
+                {
+                    m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(4).gameObject.SetActive(true);
+                    m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(4).GetComponent<TMP_Text>().text = m_SocketManager.resultData.frozenIndices[i].prizeValue.ToString();
+                }
             }
         }
     }
@@ -132,18 +141,6 @@ public class BonusController : MonoBehaviour
                 m_SlotBehaviour.m_ShowTempImages[i].slotImages[j].transform.GetChild(2).GetComponent<Image>().sprite = m_SlotBehaviour.myImages[m_SocketManager.resultData.BonusResultReel[i][j]];
             }
         }
-
-        //int row = 0;
-        //int col = 0;
-        //for (int i = 0; i < m_SocketManager.resultData.FinalsymbolsToEmit.Count; i++)
-        //{
-        //    row = m_SocketManager.resultData.FinalResultReel[i][0];
-        //    col = m_SocketManager.resultData.FinalResultReel[i][1];
-        //    m_SlotBehaviour.PopulateAnimationSprites(m_SlotBehaviour.m_ShowTempImages[row]
-        //        .slotImages[col].transform.GetChild(2).GetComponent<ImageAnimation>(),
-        //        m_SlotBehaviour.GetValueFromMatrix(row, col)
-        //        );
-        //}
     }
 
     private bool CheckFreeze(Transform m_Transform)
@@ -188,6 +185,27 @@ public class BonusController : MonoBehaviour
         return false;
     }
     #endregion
+
+    internal void StartMoonMysteryAndMystery()
+    {
+        if(m_SocketManager.resultData.moonMysteryData.Count > 0)
+        {
+            StartCoroutine(Mystery());
+        }
+    }
+
+    private IEnumerator Mystery()
+    {
+        yield return new WaitUntil(() => m_SlotBehaviour.m_CheckEndTraversal);
+        Debug.Log("<color=red>Continuing The Traversal And Now Started Moon Mystery and Mystery</color>");
+        isMysteryRunning = true;
+        for(int i = 0; i < m_SocketManager.resultData.moonMysteryData.Count; i++)
+        {
+            List<List<int>> data = m_SocketManager.resultData.moonMysteryData;
+            Transform obj = m_SlotBehaviour.m_ShowTempImages[data[i][1]].slotImages[data[i][2]].transform;
+            obj.gameObject.SetActive(false);
+        }
+    }
 
     internal void FreeSpinInitAnimation(bool startStop)
     {

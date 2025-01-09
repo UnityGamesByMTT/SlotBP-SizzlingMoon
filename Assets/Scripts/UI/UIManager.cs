@@ -397,7 +397,7 @@ public class UIManager : MonoBehaviour
             m_Turtle_Speed_Button.gameObject.SetActive(false);
             m_Rabbit_Speed_Button.gameObject.SetActive(true);
             m_Cheetah_Speed_Button.gameObject.SetActive(false);
-            slotManager.m_Speed = 0.4f;
+            slotManager.m_Speed = 0.2f;//Rabbit's Speed
             slotManager.m_Is_Turtle = false;
             slotManager.m_Is_Rabbit = true;
             slotManager.m_Is_Cheetah = false;
@@ -409,7 +409,7 @@ public class UIManager : MonoBehaviour
             m_Turtle_Speed_Button.gameObject.SetActive(false);
             m_Rabbit_Speed_Button.gameObject.SetActive(false);
             m_Cheetah_Speed_Button.gameObject.SetActive(true);
-            slotManager.m_Speed = 0.2f;
+            slotManager.m_Speed = 0.1f;//Cheetah's Speed
             slotManager.m_Is_Turtle = false;
             slotManager.m_Is_Rabbit = false;
             slotManager.m_Is_Cheetah = true;
@@ -421,7 +421,7 @@ public class UIManager : MonoBehaviour
             m_Turtle_Speed_Button.gameObject.SetActive(true);
             m_Rabbit_Speed_Button.gameObject.SetActive(false);
             m_Cheetah_Speed_Button.gameObject.SetActive(false);
-            slotManager.m_Speed = 0.6f;
+            slotManager.m_Speed = 0.4f;//Turtle's Speed
             slotManager.m_Is_Turtle = true;
             slotManager.m_Is_Rabbit = false;
             slotManager.m_Is_Cheetah = false;
@@ -501,11 +501,11 @@ public class UIManager : MonoBehaviour
 
     internal void UpdateExternalPaytableValue()
     {
-        m_Moon_Value.text = (socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[4].value).ToString() + " FUN";
-        m_Grand_Value.text = (socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[3].value).ToString() + " FUN";
-        m_Major_Value.text = (socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[2].value).ToString() + " FUN";
-        m_Minor_Value.text = (socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[1].value).ToString() + " FUN";
-        m_Mini_Value.text = (socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[0].value).ToString() + " FUN";
+        m_Moon_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[4].value)).ToString("F2") + " FUN";
+        m_Grand_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[3].value)).ToString("F2") + " FUN";
+        m_Major_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[2].value)).ToString("F2") + " FUN";
+        m_Minor_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[1].value)).ToString("F2") + " FUN";
+        m_Mini_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[0].value)).ToString("F2") + " FUN";
     }
 
     #region [[===BET BUTTONS HANDLING===]]
@@ -520,7 +520,7 @@ public class UIManager : MonoBehaviour
             TMP_Text tempText = m_DeactivatedBetButtons[i];
             if (incDec)
             {
-                if (slotManager.BetCounter < socketManager.initialData.Bets.Count - 1)
+                if (slotManager.BetCounter < socketManager.initialData.Bets.Count)
                 {
                     int index = transact != 0 ? temp_counter - ((m_BetButtons.Count - 1) - i) : temp_counter;
                     double counter = socketManager.initialData.Bets[index];
@@ -531,7 +531,7 @@ public class UIManager : MonoBehaviour
 
                     tempButton.onClick.AddListener(() =>
                     {
-
+                        Debug.Log("Button Clicked...");
                     });
 
                     if (transact == 0)
@@ -550,7 +550,7 @@ public class UIManager : MonoBehaviour
 
                     tempButton.onClick.AddListener(() =>
                     {
-
+                        Debug.Log("Button Clicked...");
                     });
 
                     tempButton.transform.GetChild(0).GetComponent<TMP_Text>().text = counter.ToString();
@@ -722,8 +722,13 @@ public class UIManager : MonoBehaviour
         FreeSpins = spins;
         if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(true);
         //if (Free_Text) Free_Text.text = spins.ToString() + " Free spins awarded.";
-        if (Free_Text) Free_Text.text = "Received " + spins.ToString() + " Free Spins";
+        if (Free_Text) Free_Text.text = "Received \n" + spins.ToString() + " Free Spins";
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
+
+        DOVirtual.DelayedCall(1.2f, () =>
+        {
+            StartFreeSpins(FreeSpins);
+        });
     }
 
     private void StartPopupAnim(double amount)
