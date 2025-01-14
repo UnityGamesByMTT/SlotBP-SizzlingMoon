@@ -18,14 +18,6 @@ public class AnimationController : MonoBehaviour
     internal List<SlotImage> m_ShowTempImages;
     private List<string> m_SymbolsToEmit = new List<string>();
 
-    private void Update()
-    {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            StartAnimation();
-        }
-    }
-
     internal void StartAnimation()
     {
         int row = 0;

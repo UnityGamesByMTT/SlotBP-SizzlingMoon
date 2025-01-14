@@ -37,9 +37,9 @@ public class SocketIOManager : MonoBehaviour
     internal JSHandler _jsManager;
 
     protected string SocketURI = null;
-    //protected string TestSocketURI = "http://localhost:5000";
-    protected string TestSocketURI = "https://game-crm-rtp-backend.onrender.com/";
-    //protected string TestSocketURI = "https://7p68wzhv-5000.inc1.devtunnels.ms/";
+    protected string TestSocketURI = "http://localhost:5000";
+    //protected string TestSocketURI = "https://game-crm-rtp-backend.onrender.com/";
+    //protected string TestSocketURI = "https://gl9r1h24-5001.inc1.devtunnels.ms/";
 
     [SerializeField]
     private string testToken;
@@ -504,7 +504,6 @@ public class GameData
     public List<int> autoSpin { get; set; }
     public List<List<string>> ResultReel { get; set; }
     public List<int> linesToEmit { get; set; }
-    //public List<List<string>> symbolsToEmit { get; set; }
     public List<string> symbolsToEmit { get; set; }
     public double WinAmout { get; set; }
     public FreeSpins freeSpins { get; set; }
@@ -514,7 +513,7 @@ public class GameData
     public List<FrozenIndex> frozenIndices { get; set; }
     public bool isGrandPrize { get; set; }
     public bool isMoonJackpot { get; set; }
-    public List<MoonMysteryDatum> moonMysteryData { get; set; }
+    public List<List<int>> moonMysteryData { get; set; }
     public bool isStickyBonus { get; set; }
     public List<StickyBonusValue> stickyBonusValue { get; set; }
     public List<string> FinalsymbolsToEmit { get; set; }
