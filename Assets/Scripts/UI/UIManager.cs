@@ -54,6 +54,13 @@ public class UIManager : MonoBehaviour
     private RectTransform Exit_RT;
 
     [SerializeField]
+    private ImageAnimation m_PaytableMajor;
+    [SerializeField]
+    private ImageAnimation m_PaytableMinor;
+    [SerializeField]
+    private ImageAnimation m_PaytableMini;
+
+    [SerializeField]
     private Button Paytable_Button;
     [SerializeField]
     private GameObject Paytable_Object;
@@ -211,6 +218,10 @@ public class UIManager : MonoBehaviour
     private GameObject[] m_Page_Reference;
     [SerializeField]
     private int m_CurrentPageCount = 0;
+    [SerializeField]
+    private TMP_Text m_Paytable_P5_D1;
+    [SerializeField]
+    private TMP_Text m_Paytable_P5_D2;
 
     [Header("Quit Popup")]
     [SerializeField]
@@ -486,6 +497,15 @@ public class UIManager : MonoBehaviour
             Toggle currentToggler = m_Page_Toggle[i];
             m_Page_Toggle[i].onValueChanged.AddListener((b) => { if (b) TogglePaytable(Array.IndexOf(m_Page_Toggle, currentToggler)); });
         }
+
+        switch (m_CurrentPageCount)
+        {
+            case 2:
+                m_PaytableMajor.StartAnimation();
+                m_PaytableMinor.StartAnimation();
+                m_PaytableMini.StartAnimation();
+                break;
+        }
     }
 
     private void NextPrevPaytable(bool next_prev, bool m_navigationMode)
@@ -526,6 +546,12 @@ public class UIManager : MonoBehaviour
         m_Major_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[2].value)).ToString("F2") + " FUN";
         m_Minor_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[1].value)).ToString("F2") + " FUN";
         m_Mini_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[0].value)).ToString("F2") + " FUN";
+
+        string grand_jackpot_text = $"Collecting all 16 Bonus symbols of any type awards the GRAND Jackpot of {(socketManager.initialData.specialBonusSymbolMulipliers[3].value)}x player's bet, which is added to the total win!";
+        string moon_jackpot_text = $"The Moon symbol can be drawn on the Moon Mystery symbol and awards the MOON Jackpot of {(socketManager.initialData.specialBonusSymbolMulipliers[4].value)}x player's bet! The MOON Jackpot is the maximum prize in the game and Bonus symbol values are not added to it.";
+
+        m_Paytable_P5_D1.text = grand_jackpot_text;//Grand Jackpot
+        m_Paytable_P5_D2.text = moon_jackpot_text;//Moon Jackpot
     }
 
     #region [[===BET BUTTONS HANDLING===]]
@@ -761,7 +787,7 @@ public class UIManager : MonoBehaviour
 
         DOVirtual.DelayedCall(1.2f, () =>
         {
-            StartFreeSpins(FreeSpins);
+            StartFreeSpins(spins);
         });
     }
 
@@ -773,12 +799,12 @@ public class UIManager : MonoBehaviour
 
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
 
-        WinPopupTextTween = DOTween.To(() => initAmount, (val) => initAmount = val, (double)amount, 1.5f).OnUpdate(() =>
+        WinPopupTextTween = DOTween.To(() => initAmount, (val) => initAmount = val, (double)amount, 0.5f).OnUpdate(() =>
         {
             if (Win_Text) Win_Text.text = initAmount.ToString("F3");
         });
 
-        ClosePopupTween = DOVirtual.DelayedCall(2.5f, () =>
+        ClosePopupTween = DOVirtual.DelayedCall(1.2f, () =>
         {
             ClosePopup(WinPopup_Object);
             slotManager.CheckPopups = false;
