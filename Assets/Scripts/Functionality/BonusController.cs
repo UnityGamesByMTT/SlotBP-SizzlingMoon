@@ -308,8 +308,13 @@ public class BonusController : MonoBehaviour
     {
         FreeSpinExitAnimation(true);
 
-        m_SocketManager.AccumulateResult(m_SlotBehaviour.BetCounter);
-        yield return new WaitUntil(() => m_SocketManager.isResultdone);
+        Debug.Log(m_SocketManager.resultData.isGrandPrize);
+        Debug.Log(m_SocketManager.resultData.isMoonJackpot);
+        if((!m_SocketManager.resultData.isGrandPrize && !m_SocketManager.resultData.isMoonJackpot))
+        {
+            m_SocketManager.AccumulateResult(m_SlotBehaviour.BetCounter);
+            yield return new WaitUntil(() => m_SocketManager.isResultdone);
+        }
 
         yield return new WaitForSeconds(1f);
 

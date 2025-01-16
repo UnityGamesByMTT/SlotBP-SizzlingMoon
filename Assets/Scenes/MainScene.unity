@@ -13936,6 +13936,9 @@ MonoBehaviour:
   Exit_Button: {fileID: 1298846852}
   Exit_Object: {fileID: 1298846850}
   Exit_RT: {fileID: 1298846851}
+  m_PaytableMajor: {fileID: 540732057}
+  m_PaytableMinor: {fileID: 911394283}
+  m_PaytableMini: {fileID: 676847469}
   Paytable_Button: {fileID: 917547286}
   Paytable_Object: {fileID: 0}
   Paytable_RT: {fileID: 0}
@@ -14024,6 +14027,8 @@ MonoBehaviour:
   - {fileID: 607102127}
   - {fileID: 449023680}
   m_CurrentPageCount: 0
+  m_Paytable_P5_D1: {fileID: 156743141}
+  m_Paytable_P5_D2: {fileID: 1449286453}
   QuitPopup_Object: {fileID: 14842435}
   YesQuit_Button: {fileID: 1960647876}
   NoQuit_Button: {fileID: 1192475828}
@@ -23702,7 +23707,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &662013968
 RectTransform:
   m_ObjectHideFlags: 0
@@ -50535,19 +50540,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 23981192bdbc04ab8aa3e42d43e7a1a6, type: 3}
   - {fileID: 21300000, guid: de8bd86ddb2934d91a83cbc9de27f31a, type: 3}
   - {fileID: 21300000, guid: 86d5237d722cd4faba6197a1634139dc, type: 3}
-  - {fileID: 21300000, guid: 86d5237d722cd4faba6197a1634139dc, type: 3}
-  - {fileID: 21300000, guid: 86d5237d722cd4faba6197a1634139dc, type: 3}
-  - {fileID: 21300000, guid: 86d5237d722cd4faba6197a1634139dc, type: 3}
-  - {fileID: 21300000, guid: 86d5237d722cd4faba6197a1634139dc, type: 3}
-  - {fileID: 21300000, guid: 86d5237d722cd4faba6197a1634139dc, type: 3}
-  - {fileID: 21300000, guid: 86d5237d722cd4faba6197a1634139dc, type: 3}
-  - {fileID: 21300000, guid: 86d5237d722cd4faba6197a1634139dc, type: 3}
-  - {fileID: 21300000, guid: 86d5237d722cd4faba6197a1634139dc, type: 3}
-  - {fileID: 21300000, guid: 86d5237d722cd4faba6197a1634139dc, type: 3}
-  - {fileID: 21300000, guid: 86d5237d722cd4faba6197a1634139dc, type: 3}
-  - {fileID: 21300000, guid: 86d5237d722cd4faba6197a1634139dc, type: 3}
-  - {fileID: 21300000, guid: 86d5237d722cd4faba6197a1634139dc, type: 3}
-  - {fileID: 21300000, guid: 86d5237d722cd4faba6197a1634139dc, type: 3}
   - {fileID: 21300000, guid: 6d1eb0323bbf54391b924a7ca7104b2f, type: 3}
   - {fileID: 21300000, guid: b622477fb465947e98c9508acf4d5950, type: 3}
   - {fileID: 21300000, guid: dc7aa5619d08340f3a7e7be08ea886fa, type: 3}
@@ -50557,7 +50549,7 @@ MonoBehaviour:
   useSharedMaterial: 1
   doLoopAnimation: 1
   currentAnimationState: 0
-  AnimationSpeed: 20
+  AnimationSpeed: 12
   delayBetweenLoop: 0
   playOnAwake: 1
 --- !u!114 &1418604658
@@ -66819,7 +66811,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1952544024
 RectTransform:
   m_ObjectHideFlags: 0
