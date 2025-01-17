@@ -320,8 +320,9 @@ public class SlotBehaviour : MonoBehaviour
         Debug.Log("Entered...");
         while (i < spinchances)
         {
-            uiManager.FreeSpins--;
-            if (FSnum_text) FSnum_text.text = (uiManager.FreeSpins).ToString();
+            //uiManager.FreeSpins--;
+            //if (FSnum_text) FSnum_text.text = (uiManager.FreeSpins).ToString();
+            if (FSnum_text) FSnum_text.text = SocketManager.resultData.freeSpinCount.ToString();
             StartSlots();
             yield return tweenroutine;
             //yield return new WaitForSeconds(2);
@@ -329,6 +330,7 @@ public class SlotBehaviour : MonoBehaviour
             i++;
         }
         if (FSBoard_Object) FSBoard_Object.SetActive(false);
+        BalanceUpdate();
         _bonusManager.ResetBonus();
         FreeSpinInitRoutine = StartCoroutine(_bonusManager.FreeSpinExitAnimRoutine($"<b>You Won</b>\n"));
         yield return FreeSpinInitRoutine;
@@ -365,6 +367,7 @@ public class SlotBehaviour : MonoBehaviour
             FreeSpinRoutine = null;
         }
         //ResetAllAnimations();
+        BalanceUpdate();
         Debug.Log(string.Concat("<color=red><b>", IsAutoFreeSpin, "</b></color>"));
         if (IsAutoFreeSpin)
         {
@@ -814,7 +817,8 @@ public class SlotBehaviour : MonoBehaviour
                         StopCoroutine(FreeSpinRoutine);
                         FreeSpinRoutine = null;
                     }
-                    FreeSpinInitRoutine = StartCoroutine(_bonusManager.FreeSpinInitAnimRoutine());
+                    //FreeSpinInitRoutine = StartCoroutine(_bonusManager.FreeSpinInitAnimRoutine());
+                    uiManager.FreeSpinProcess((int)SocketManager.resultData.freeSpinCount);
                     //yield return FreeSpinInitRoutine;
                     //uiManager.FreeSpinProcess((int)SocketManager.resultData.freeSpinCount);
                 }
@@ -837,6 +841,7 @@ public class SlotBehaviour : MonoBehaviour
                 StopFreeSpin();
                 m_AnimationController.ResetAnimation();
                 if (!IsAutoFreeSpin) ToggleButtonGrp(true);
+                BalanceUpdate();
                 Debug.Log("Moon Jackpot Received...");
             }
             else if (SocketManager.resultData.isGrandPrize)
@@ -847,7 +852,12 @@ public class SlotBehaviour : MonoBehaviour
                 StopFreeSpin();
                 m_AnimationController.ResetAnimation();
                 if (!IsAutoFreeSpin) ToggleButtonGrp(true);
+                BalanceUpdate();
                 Debug.Log("Grand Prize Received...");
+            }
+            else
+            {
+                BalanceUpdate();
             }
             //else if (IsFreeSpin)
             //{
@@ -1081,6 +1091,11 @@ public class SlotBehaviour : MonoBehaviour
             if (Balance_text) Balance_text.text = initAmount.ToString("F3");
         });
         currentBalance = balance;
+    }
+
+    internal void BalanceUpdate()
+    {
+        if (TotalWin_text) TotalWin_text.text = (SocketManager.playerdata.currentWining).ToString("F3");
     }
 
     internal void CheckWinPopups()
