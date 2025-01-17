@@ -14006,6 +14006,7 @@ MonoBehaviour:
   m_Paytable_Mini_Value: {fileID: 99007354}
   m_Paytable_Minor_Value: {fileID: 416980066}
   m_Paytable_Major_Value: {fileID: 871818760}
+  m_Paytable_Respins_Desc: {fileID: 1267287965}
   m_NextPage_Button: {fileID: 1282430851}
   m_PrevPage_Button: {fileID: 1340472517}
   m_Page_Toggle:
@@ -16245,7 +16246,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1.00
+  m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -23707,7 +23708,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &662013968
 RectTransform:
   m_ObjectHideFlags: 0
@@ -41632,7 +41633,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -50}
+  m_AnchoredPosition: {x: 0, y: -60}
   m_SizeDelta: {x: 95, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1177147835
@@ -44542,7 +44543,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Drawing at least 6 Bonus symbols activates the Hold the Jackpot Bonus.
+  m_text: Hold The Jackpot Bonus can be triggered when atleast 6 Bonus Symbol comes
+    throughtout the reels. It can also be triggered when 5 Bonus Symbol comes with
+    1 Sticky Symbol within the reels.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -66811,7 +66814,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1952544024
 RectTransform:
   m_ObjectHideFlags: 0
@@ -77664,7 +77667,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 13633292dfa2449238ff944d22063e4c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5e511e4f2d7c5416c98ca81c9c55a095, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -77814,7 +77817,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 13633292dfa2449238ff944d22063e4c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 34b80a93f76e247c18f4e9d689c98d92, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -77964,7 +77967,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a6bd66e31a9fc4075ab2cd1c6b233366, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f53fb4e05e44441b69ee8c9b3a6e11e2, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

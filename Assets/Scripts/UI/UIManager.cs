@@ -206,6 +206,8 @@ public class UIManager : MonoBehaviour
     private TMP_Text m_Paytable_Minor_Value;
     [SerializeField]
     private TMP_Text m_Paytable_Major_Value;
+    [SerializeField]
+    private TMP_Text m_Paytable_Respins_Desc;
 
     [Header("Paytable Navigation")]
     [SerializeField]
@@ -782,7 +784,8 @@ public class UIManager : MonoBehaviour
         FreeSpins = spins;
         if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(true);
         //if (Free_Text) Free_Text.text = spins.ToString() + " Free spins awarded.";
-        if (Free_Text) Free_Text.text = "Received \n" + spins.ToString() + " Free Spins";
+        //if (Free_Text) Free_Text.text = "Received \n" + spins.ToString() + " Free Spins";
+        if (Free_Text) Free_Text.text = "Free Spin Set To 3";
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
 
         DOVirtual.DelayedCall(1.2f, () =>
@@ -887,10 +890,10 @@ public class UIManager : MonoBehaviour
 
         for (int i = 0; i < paylines.symbols.Count; i++)
         {
-            if (paylines.symbols[i].Name.ToUpper() == "BONUS")
-            {
-                if (Bonus_Text) Bonus_Text.text = paylines.symbols[i].description.ToString();
-            }
+            //if (paylines.symbols[i].Name.ToUpper() == "BONUS")
+            //{
+            //    if (Bonus_Text) Bonus_Text.text = paylines.symbols[i].description.ToString();
+            //}
             if (paylines.symbols[i].Name.ToUpper() == "STICKYBONUS")
             {
                 if (StickyBonus_Text) StickyBonus_Text.text = paylines.symbols[i].description.ToString();
@@ -915,6 +918,11 @@ public class UIManager : MonoBehaviour
             if (paylines.symbols[i].Name.ToUpper() == "WILD")
             {
                 if (Wild_Text) Wild_Text.text = paylines.symbols[i].description.ToString();
+            }
+            //This is the bonus symbol description
+            if(paylines.symbols[i].Name.ToUpper() == "PLACEHOLDER")
+            {
+                if (Bonus_Text) Bonus_Text.text = paylines.symbols[i].description.ToString();
             }
         }
     }
