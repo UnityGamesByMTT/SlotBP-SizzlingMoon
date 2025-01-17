@@ -36,7 +36,7 @@ public class BonusController : MonoBehaviour
                 col = m_SocketManager.resultData.stickyBonusValue[i].position[1];
 
                 if (!CheckSticky(m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform))
-                    if(m_SocketManager.resultData.stickyBonusValue[i].value > 0)
+                    if(m_SocketManager.resultData.stickyBonusValue[i].value >= 0)
                         m_SlotBehaviour.m_Sticky.Add(new Sticky
                         {
                             m_Transform = m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform,
@@ -51,8 +51,9 @@ public class BonusController : MonoBehaviour
                     );
                 //NOTE: The below code line is to enable the score text
                 m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(4).gameObject.SetActive(true);
+
                 m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(3).GetChild(0).GetComponent<TMP_Text>().text = m_SocketManager.resultData.stickyBonusValue[i].value.ToString();
-                m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(4).GetComponent<TMP_Text>().text = m_SocketManager.resultData.stickyBonusValue[i].prizeValue.ToString();
+                m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(4).GetComponent<TMP_Text>().text = string.Concat(m_SocketManager.resultData.stickyBonusValue[i].prizeValue, "x").ToString();
             }
         }
     }
@@ -135,7 +136,7 @@ public class BonusController : MonoBehaviour
                 if(m_SocketManager.resultData.frozenIndices[i].symbol < 12)
                 {
                     m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(4).gameObject.SetActive(true);
-                    m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(4).GetComponent<TMP_Text>().text = m_SocketManager.resultData.frozenIndices[i].prizeValue.ToString();
+                    m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform.GetChild(4).GetComponent<TMP_Text>().text = string.Concat(m_SocketManager.resultData.frozenIndices[i].prizeValue, "x").ToString();
                 }
             }
         }
@@ -223,6 +224,8 @@ public class BonusController : MonoBehaviour
 
         for (int i = 0; i < m_SocketManager.resultData.moonMysteryData.Count; i++)
         {
+            
+            m_SlotBehaviour.m_ShowTempImages[data[i][1]].slotImages[data[i][2]].transform.GetChild(4).GetComponent<TMP_Text>().text = (data[i][3] + "x").ToString();
             m_ListOfMystery.Add(m_SlotBehaviour.m_ShowTempImages[data[i][1]].slotImages[data[i][2]].gameObject);
             Debug.Log(data[i][1] + " " + data[i][2] + " " + data[i][4]);
         }
@@ -248,10 +251,21 @@ public class BonusController : MonoBehaviour
             i.transform.GetChild(0).gameObject.SetActive(true);
             i.transform.GetChild(1).gameObject.SetActive(true);
             i.transform.GetChild(2).gameObject.SetActive(true);
+
+            //i.transform.GetChild(4).gameObject.SetActive(true);
+
             i.transform.GetChild(1).GetComponent<ImageAnimation>().StartAnimation();
             m_SlotBehaviour.InitializeShowTweening(i.transform.GetChild(2));
 
             //yield return new WaitForSeconds(0.6f);
+        }
+
+        for(int i = 0; i < m_SocketManager.resultData.moonMysteryData.Count; i++)
+        {
+            if (data[i][4] > 9 && data[i][4] < 12)
+            {
+                m_SlotBehaviour.m_ShowTempImages[data[i][1]].slotImages[data[i][2]].transform.GetChild(4).gameObject.SetActive(true);
+            }
         }
 
         yield return new WaitForSeconds(0.8f);
@@ -260,7 +274,7 @@ public class BonusController : MonoBehaviour
 
         m_ListOfMystery.Clear();
         m_ListOfMystery.TrimExcess();
-
+        m_SlotBehaviour.BalanceUpdate();
         isMysteryRunning = false;
     }
 
@@ -284,6 +298,7 @@ public class BonusController : MonoBehaviour
         {
             m_FreeSpinExitAnimation.gameObject.SetActive(true);
             m_FreeSpinExitAnimation.StartAnimation();
+            m_SlotBehaviour.BalanceUpdate();
         }
         else
         {
