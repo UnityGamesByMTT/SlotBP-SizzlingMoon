@@ -169,7 +169,7 @@ public class SlotBehaviour : MonoBehaviour
     private Coroutine FreeSpinInitRoutine = null;
 
     private bool IsAutoSpin = false;
-    private bool IsFreeSpin = false;
+    internal bool IsFreeSpin = false;
     private bool IsSpinning = false;
     private bool IsAutoFreeSpin = false;
     private bool CheckSpinAudio = false;
