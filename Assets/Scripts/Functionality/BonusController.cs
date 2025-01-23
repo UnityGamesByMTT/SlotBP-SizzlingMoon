@@ -28,7 +28,7 @@ public class BonusController : MonoBehaviour
     {
         int row = 0;
         int col = 0;
-        if (m_SocketManager.resultData.isStickyBonus)
+        if (m_SocketManager.resultData.isStickyBonus || m_SlotBehaviour.IsFreeSpin)
         {
             for (int i = 0; i < m_SocketManager.resultData.stickyBonusValue.Count; i++)
             {
@@ -79,7 +79,9 @@ public class BonusController : MonoBehaviour
                 if (start_stop && m_SlotBehaviour.m_Sticky[i].m_Count >= 0)
                 {
                     Sticky sticky = m_SlotBehaviour.m_Sticky[i];
-                    sticky.m_Count--;
+                    if(!m_SlotBehaviour.IsFreeSpin){
+                        sticky.m_Count--;
+                    }
                     m_SlotBehaviour.m_Sticky[i] = sticky;
                     if (m_SlotBehaviour.m_Sticky[i].m_Count == -1)
                     {
@@ -109,7 +111,7 @@ public class BonusController : MonoBehaviour
         int row = 0;
         int col = 0;
         //PopulateFreeSpinResult();
-        if (m_SocketManager.resultData.isFreeSpin)
+        if (m_SocketManager.resultData.isFreeSpin || m_SlotBehaviour.IsFreeSpin)
         {
             if(!isFreezeRunning)
             {
@@ -172,7 +174,7 @@ public class BonusController : MonoBehaviour
         {
             if (m_SlotBehaviour.m_Sticky[i].m_Transform == m_transform)
             {
-                if (start_stop && m_SlotBehaviour.m_Sticky[i].m_Count > 0)
+                if (start_stop && m_SlotBehaviour.m_Sticky[i].m_Count >= 0)
                 {
                     Sticky sticky = m_SlotBehaviour.m_Sticky[i];
                     //sticky.m_Count--;
@@ -191,6 +193,9 @@ public class BonusController : MonoBehaviour
                         return true;
                     }
                 }
+            }
+            else{
+                // Debug.Log("Not found In list: "+ m_transform.name + " Parent: " + m_transform.parent.name);
             }
         }
         return false;
@@ -309,7 +314,7 @@ public class BonusController : MonoBehaviour
 
     internal IEnumerator FreeSpinInitAnimRoutine()
     {
-        Debug.Log("Starting Free Spin...");
+        // Debug.Log("Starting Free Spin...");
         FreeSpinInitAnimation(true);
 
         yield return new WaitForSeconds(2f);
@@ -323,8 +328,8 @@ public class BonusController : MonoBehaviour
     {
         FreeSpinExitAnimation(true);
 
-        Debug.Log(m_SocketManager.resultData.isGrandPrize);
-        Debug.Log(m_SocketManager.resultData.isMoonJackpot);
+        // Debug.Log(m_SocketManager.resultData.isGrandPrize);
+        // Debug.Log(m_SocketManager.resultData.isMoonJackpot);
         if((!m_SocketManager.resultData.isGrandPrize && !m_SocketManager.resultData.isMoonJackpot))
         {
             m_SocketManager.AccumulateResult(m_SlotBehaviour.BetCounter);
