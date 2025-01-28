@@ -331,6 +331,7 @@ public class SlotBehaviour : MonoBehaviour
         }
         if (FSBoard_Object) FSBoard_Object.SetActive(false);
         BalanceUpdate();
+        if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("F3");
         _bonusManager.ResetBonus();
         FreeSpinInitRoutine = StartCoroutine(_bonusManager.FreeSpinExitAnimRoutine($"<b>You Won</b>\n"));
         yield return FreeSpinInitRoutine;
@@ -493,7 +494,7 @@ public class SlotBehaviour : MonoBehaviour
         BetCounter = 0;
         if (LineBet_text) LineBet_text.text = SocketManager.initialData.Bets[BetCounter].ToString();
         if (TotalBet_text) TotalBet_text.text = (SocketManager.initialData.Bets[BetCounter] * Lines).ToString();
-        if (TotalWin_text) TotalWin_text.text = "0.00";
+        if (TotalWin_text) TotalWin_text.text = "0.000";
         if (Balance_text) Balance_text.text = SocketManager.playerdata.Balance.ToString("F3");
         //if (MaxBet_Button) MaxBet_Button.transform.GetChild(0).GetComponent<TMP_Text>().text = SocketManager.initialData.Bets[SocketManager.initialData.Bets.Count - 1].ToString();
         //uiManager.LoadBetButtons(true);
@@ -951,20 +952,20 @@ public class SlotBehaviour : MonoBehaviour
 
                         Debug.Log(string.Concat("<color=yellow><b>", $"Bonus Result Reel Is Not Empty: {SocketManager.resultData.BonusResultReel.Count}", "</b></color>"));
 
-                        if (SocketManager.resultData.BonusResultReel[i][j] > 13 && SocketManager.resultData.BonusResultReel[i][j] < 17)
-                        {
-                            Debug.Log(string.Concat("<color=yellow><b>", $"Found The Element In It: {SocketManager.resultData.BonusResultReel.Count}", "</b></color>"));
-                            PopulateAnimationSprites(m_ShowTempImages[j].slotImages[i].transform.GetChild(2).GetComponent<ImageAnimation>(), SocketManager.resultData.BonusResultReel[i][j]);
-                            if (m_ShowTempImages[j].slotImages[i].transform.GetChild(2).GetComponent<ImageAnimation>().textureArray.Count > 0)
-                            {
-                                Vector2 size = new Vector2(430, 430);
-                                if(m_ShowTempImages[j].slotImages[i].transform.GetChild(2).GetComponent<RectTransform>().sizeDelta != size)
-                                {
-                                    m_ShowTempImages[j].slotImages[i].transform.GetChild(2).GetComponent<RectTransform>().sizeDelta = size;
-                                }
-                                    m_ShowTempImages[j].slotImages[i].transform.GetChild(2).GetComponent<ImageAnimation>().StartAnimation();
-                            }
-                        }
+                        // if (SocketManager.resultData.BonusResultReel[i][j] > 13 && SocketManager.resultData.BonusResultReel[i][j] < 17)
+                        // {
+                        //     Debug.Log(string.Concat("<color=yellow><b>", $"Found The Element In It: {SocketManager.resultData.BonusResultReel.Count}", "</b></color>"));
+                        //     PopulateAnimationSprites(m_ShowTempImages[j].slotImages[i].transform.GetChild(2).GetComponent<ImageAnimation>(), SocketManager.resultData.BonusResultReel[i][j]);
+                        //     if (m_ShowTempImages[j].slotImages[i].transform.GetChild(2).GetComponent<ImageAnimation>().textureArray.Count > 0)
+                        //     {
+                        //         Vector2 size = new Vector2(430, 430);
+                        //         if(m_ShowTempImages[j].slotImages[i].transform.GetChild(2).GetComponent<RectTransform>().sizeDelta != size)
+                        //         {
+                        //             m_ShowTempImages[j].slotImages[i].transform.GetChild(2).GetComponent<RectTransform>().sizeDelta = size;
+                        //         }
+                        //             m_ShowTempImages[j].slotImages[i].transform.GetChild(2).GetComponent<ImageAnimation>().StartAnimation();
+                        //     }
+                        // }
                     }
                     else
                     {

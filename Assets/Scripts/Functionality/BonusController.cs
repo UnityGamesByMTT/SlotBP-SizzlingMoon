@@ -36,7 +36,7 @@ public class BonusController : MonoBehaviour
                 col = m_SocketManager.resultData.stickyBonusValue[i].position[1];
 
                 if (!CheckSticky(m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform))
-                    if(m_SocketManager.resultData.stickyBonusValue[i].value >= 0)
+                    if(m_SocketManager.resultData.stickyBonusValue[i].value > 0)
                         m_SlotBehaviour.m_Sticky.Add(new Sticky
                         {
                             m_Transform = m_SlotBehaviour.m_ShowTempImages[row].slotImages[col].transform,

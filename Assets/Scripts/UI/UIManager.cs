@@ -500,14 +500,14 @@ public class UIManager : MonoBehaviour
             m_Page_Toggle[i].onValueChanged.AddListener((b) => { if (b) TogglePaytable(Array.IndexOf(m_Page_Toggle, currentToggler)); });
         }
 
-        switch (m_CurrentPageCount)
-        {
-            case 2:
-                m_PaytableMajor.StartAnimation();
-                m_PaytableMinor.StartAnimation();
-                m_PaytableMini.StartAnimation();
-                break;
-        }
+        // switch (m_CurrentPageCount)
+        // {
+        //     case 2:
+        //         m_PaytableMajor.StartAnimation();
+        //         m_PaytableMinor.StartAnimation();
+        //         m_PaytableMini.StartAnimation();
+        //         break;
+        // }
     }
 
     private void NextPrevPaytable(bool next_prev, bool m_navigationMode)
@@ -543,11 +543,11 @@ public class UIManager : MonoBehaviour
 
     internal void UpdateExternalPaytableValue()
     {
-        m_Moon_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[4].value)).ToString("F2") + " FUN";
-        m_Grand_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[3].value)).ToString("F2") + " FUN";
-        m_Major_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[2].value)).ToString("F2") + " FUN";
-        m_Minor_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[1].value)).ToString("F2") + " FUN";
-        m_Mini_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[0].value)).ToString("F2") + " FUN";
+        m_Moon_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[4].value)).ToString("F2");
+        m_Grand_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[3].value)).ToString("F2");
+        m_Major_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[2].value)).ToString("F2");
+        m_Minor_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[1].value)).ToString("F2");
+        m_Mini_Value.text = ((double)(socketManager.initialData.Bets[slotManager.BetCounter] * socketManager.initialData.specialBonusSymbolMulipliers[0].value)).ToString("F2");
 
         string grand_jackpot_text = $"Collecting all 16 Bonus symbols of any type awards the GRAND Jackpot of {(socketManager.initialData.specialBonusSymbolMulipliers[3].value)}x player's bet, which is added to the total win!";
         string moon_jackpot_text = $"The Moon symbol can be drawn on the Moon Mystery symbol and awards the MOON Jackpot of {(socketManager.initialData.specialBonusSymbolMulipliers[4].value)}x player's bet! The MOON Jackpot is the maximum prize in the game and Bonus symbol values are not added to it.";
@@ -843,57 +843,57 @@ public class UIManager : MonoBehaviour
             string text = null;
             if (paylines.symbols[i].Multiplier[0][0] != 0)
             {
-                text += "<color=orange><b>16x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[0][0] + "x FUN</b></color> \n";
+                text += "<color=orange><b>16x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[0][0] + "x</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[1][0] != 0)
             {
-                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[1][0] + "x FUN</b></color> \n";
+                text += "<color=orange><b>15x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[1][0] + "x</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[2][0] != 0)
             {
-                text += "<color=orange><b>14x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[2][0] + "x FUN</b></color> \n";
+                text += "<color=orange><b>14x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[2][0] + "x</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[3][0] != 0)
             {
-                text += "<color=orange><b>13x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[3][0] + "x FUN</b></color> \n";
+                text += "<color=orange><b>13x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[3][0] + "x</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[4][0] != 0)
             {
-                text += "<color=orange><b>12x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[4][0] + "x FUN</b></color> \n";
+                text += "<color=orange><b>12x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[4][0] + "x</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[5][0] != 0)
             {
-                text += "<color=orange><b>11x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[5][0] + "x FUN</b></color> \n";
+                text += "<color=orange><b>11x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[5][0] + "x</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[6][0] != 0)
             {
-                text += "<color=orange><b>10x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[6][0] + "x FUN</b></color> \n";
+                text += "<color=orange><b>10x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[6][0] + "x</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[7][0] != 0)
             {
-                text += "<color=orange><b>9x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[7][0] + "x FUN</b></color> \n";
+                text += "<color=orange><b>9x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[7][0] + "x</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[8][0] != 0)
             {
-                text += "<color=orange><b>8x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[8][0] + "x FUN</b></color> \n";
+                text += "<color=orange><b>8x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[8][0] + "x</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[9][0] != 0)
             {
-                text += "<color=orange><b>7x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[9][0] + "x FUN</b></color> \n";
+                text += "<color=orange><b>7x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[9][0] + "x</b></color> \n";
             }
             if (paylines.symbols[i].Multiplier[10][0] != 0)
             {
-                text += "<color=orange><b>6x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[10][0] + "x FUN</b></color>";
+                text += "<color=orange><b>6x - </b></color>" + "<color=yellow><b>" + paylines.symbols[i].Multiplier[10][0] + "x</b></color>";
             }
             if (SymbolsText[i]) SymbolsText[i].text = text;
         }
 
         for (int i = 0; i < paylines.symbols.Count; i++)
         {
-            //if (paylines.symbols[i].Name.ToUpper() == "BONUS")
-            //{
-            //    if (Bonus_Text) Bonus_Text.text = paylines.symbols[i].description.ToString();
-            //}
+            if (paylines.symbols[i].Name.ToUpper() == "BONUS")
+            {
+               if (Bonus_Text) Bonus_Text.text = paylines.symbols[i].description.ToString();
+            }
             if (paylines.symbols[i].Name.ToUpper() == "STICKYBONUS")
             {
                 if (StickyBonus_Text) StickyBonus_Text.text = paylines.symbols[i].description.ToString();
@@ -920,10 +920,10 @@ public class UIManager : MonoBehaviour
                 if (Wild_Text) Wild_Text.text = paylines.symbols[i].description.ToString();
             }
             //This is the bonus symbol description
-            if(paylines.symbols[i].Name.ToUpper() == "PLACEHOLDER")
-            {
-                if (Bonus_Text) Bonus_Text.text = paylines.symbols[i].description.ToString();
-            }
+            // if(paylines.symbols[i].Name.ToUpper() == "PLACEHOLDER")
+            // {
+            //     if (Bonus_Text) Bonus_Text.text = paylines.symbols[i].description.ToString();
+            // }
         }
     }
 
